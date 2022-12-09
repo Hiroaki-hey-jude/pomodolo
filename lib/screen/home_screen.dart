@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pomodolo/screen/lounge_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Stack(
         children: [
@@ -23,42 +19,25 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SafeArea(
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    Card(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 24,
-                          horizontal: 24,
-                        ),
-                        child: Column(
-                          children: const [
-                            Text(
-                              'Lounge',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                              ),
-                            ),
-                            Text(
-                              '現在　3人',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoungeScreen()),
+                      );
+                    },
+                    child: const Text('Lounge'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('room'),
+                  ),
+                ],
               ),
             ),
           ),
