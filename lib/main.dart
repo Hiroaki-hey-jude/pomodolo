@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Lounge'),
+          title: const Text('top'),
           backgroundColor: Colors.transparent,
         ),
         extendBodyBehindAppBar: true,
