@@ -17,8 +17,12 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$LoginState {
   bool get isLoading => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
   UserModel? get userModel => throw _privateConstructorUsedError;
   GlobalKey<FormState>? get formKey => throw _privateConstructorUsedError;
+  SharedPreferencesData? get sharedPreferencesData =>
+      throw _privateConstructorUsedError;
+  Auth? get auth => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LoginStateCopyWith<LoginState> get copyWith =>
@@ -32,7 +36,12 @@ abstract class $LoginStateCopyWith<$Res> {
       _$LoginStateCopyWithImpl<$Res, LoginState>;
   @useResult
   $Res call(
-      {bool isLoading, UserModel? userModel, GlobalKey<FormState>? formKey});
+      {bool isLoading,
+      String password,
+      UserModel? userModel,
+      GlobalKey<FormState>? formKey,
+      SharedPreferencesData? sharedPreferencesData,
+      Auth? auth});
 
   $UserModelCopyWith<$Res>? get userModel;
 }
@@ -51,14 +60,21 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? password = null,
     Object? userModel = freezed,
     Object? formKey = freezed,
+    Object? sharedPreferencesData = freezed,
+    Object? auth = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
       userModel: freezed == userModel
           ? _value.userModel
           : userModel // ignore: cast_nullable_to_non_nullable
@@ -67,6 +83,14 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
           ? _value.formKey
           : formKey // ignore: cast_nullable_to_non_nullable
               as GlobalKey<FormState>?,
+      sharedPreferencesData: freezed == sharedPreferencesData
+          ? _value.sharedPreferencesData
+          : sharedPreferencesData // ignore: cast_nullable_to_non_nullable
+              as SharedPreferencesData?,
+      auth: freezed == auth
+          ? _value.auth
+          : auth // ignore: cast_nullable_to_non_nullable
+              as Auth?,
     ) as $Val);
   }
 
@@ -92,7 +116,12 @@ abstract class _$$_LoginStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {bool isLoading, UserModel? userModel, GlobalKey<FormState>? formKey});
+      {bool isLoading,
+      String password,
+      UserModel? userModel,
+      GlobalKey<FormState>? formKey,
+      SharedPreferencesData? sharedPreferencesData,
+      Auth? auth});
 
   @override
   $UserModelCopyWith<$Res>? get userModel;
@@ -110,14 +139,21 @@ class __$$_LoginStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? password = null,
     Object? userModel = freezed,
     Object? formKey = freezed,
+    Object? sharedPreferencesData = freezed,
+    Object? auth = freezed,
   }) {
     return _then(_$_LoginState(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
       userModel: freezed == userModel
           ? _value.userModel
           : userModel // ignore: cast_nullable_to_non_nullable
@@ -126,6 +162,14 @@ class __$$_LoginStateCopyWithImpl<$Res>
           ? _value.formKey
           : formKey // ignore: cast_nullable_to_non_nullable
               as GlobalKey<FormState>?,
+      sharedPreferencesData: freezed == sharedPreferencesData
+          ? _value.sharedPreferencesData
+          : sharedPreferencesData // ignore: cast_nullable_to_non_nullable
+              as SharedPreferencesData?,
+      auth: freezed == auth
+          ? _value.auth
+          : auth // ignore: cast_nullable_to_non_nullable
+              as Auth?,
     ));
   }
 }
@@ -133,19 +177,32 @@ class __$$_LoginStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_LoginState implements _LoginState {
-  const _$_LoginState({this.isLoading = false, this.userModel, this.formKey});
+  const _$_LoginState(
+      {this.isLoading = false,
+      this.password = '',
+      this.userModel,
+      this.formKey,
+      this.sharedPreferencesData,
+      this.auth});
 
   @override
   @JsonKey()
   final bool isLoading;
   @override
+  @JsonKey()
+  final String password;
+  @override
   final UserModel? userModel;
   @override
   final GlobalKey<FormState>? formKey;
+  @override
+  final SharedPreferencesData? sharedPreferencesData;
+  @override
+  final Auth? auth;
 
   @override
   String toString() {
-    return 'LoginState(isLoading: $isLoading, userModel: $userModel, formKey: $formKey)';
+    return 'LoginState(isLoading: $isLoading, password: $password, userModel: $userModel, formKey: $formKey, sharedPreferencesData: $sharedPreferencesData, auth: $auth)';
   }
 
   @override
@@ -155,13 +212,19 @@ class _$_LoginState implements _LoginState {
             other is _$_LoginState &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
             (identical(other.userModel, userModel) ||
                 other.userModel == userModel) &&
-            (identical(other.formKey, formKey) || other.formKey == formKey));
+            (identical(other.formKey, formKey) || other.formKey == formKey) &&
+            (identical(other.sharedPreferencesData, sharedPreferencesData) ||
+                other.sharedPreferencesData == sharedPreferencesData) &&
+            (identical(other.auth, auth) || other.auth == auth));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, userModel, formKey);
+  int get hashCode => Object.hash(runtimeType, isLoading, password, userModel,
+      formKey, sharedPreferencesData, auth);
 
   @JsonKey(ignore: true)
   @override
@@ -173,15 +236,24 @@ class _$_LoginState implements _LoginState {
 abstract class _LoginState implements LoginState {
   const factory _LoginState(
       {final bool isLoading,
+      final String password,
       final UserModel? userModel,
-      final GlobalKey<FormState>? formKey}) = _$_LoginState;
+      final GlobalKey<FormState>? formKey,
+      final SharedPreferencesData? sharedPreferencesData,
+      final Auth? auth}) = _$_LoginState;
 
   @override
   bool get isLoading;
   @override
+  String get password;
+  @override
   UserModel? get userModel;
   @override
   GlobalKey<FormState>? get formKey;
+  @override
+  SharedPreferencesData? get sharedPreferencesData;
+  @override
+  Auth? get auth;
   @override
   @JsonKey(ignore: true)
   _$$_LoginStateCopyWith<_$_LoginState> get copyWith =>
