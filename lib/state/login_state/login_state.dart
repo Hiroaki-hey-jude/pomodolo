@@ -29,7 +29,6 @@ class LoginState with _$LoginState {
     @Default(false) bool isLoading,
     @Default('') String password,
     UserModel? userModel,
-    GlobalKey<FormState>? formKey,
     SharedPreferencesData? sharedPreferencesData,
     Auth? auth,
   }) = _LoginState;
@@ -46,6 +45,7 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
 
   void getEmail(String email) {
     state = state.copyWith(userModel: UserModel(email: email));
+    print(state);
   }
 
   void getPassword(String password) {
@@ -53,34 +53,44 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
     print(state);
   }
 
-  Future<void> login(BuildContext context) async {
-    state = state.copyWith(isLoading: true);
-    final EmailLogInResults emailLogInResults =
-        await state.auth!.logInUserWithEmailandPassword(
-      state.userModel!.email,
-      state.password,
-    );
-    String message = '';
-    if (emailLogInResults == EmailLogInResults.LogInCompleted) {
-      QuerySnapshot snapshot =
-          await FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
-              .gettingUserData(state.userModel!.email);
-      await SharedPreferencesData().saveUserLoggedInStatus(true);
-      await SharedPreferencesData().saveUserEmailSF(state.userModel!.email);
-      await SharedPreferencesData().saveUserNameSF(snapshot.docs[0]['name']); //naze
-      print(snapshot.docs[0]['name']);
-      nextScreenReplacement(context, const LoungeScreen());
-    } else if (emailLogInResults == EmailLogInResults.EmailNotVerified) {
-      message =
-          'Email not verified. \nPlease Verify your Email and then log in';
-    } else if (emailLogInResults == EmailLogInResults.EmailPasswordInvalid) {
-      message = 'Email Or Password Invalid';
-    } else
-      message = 'Log in not completed';
+  Future<void> login(
+    BuildContext context,
+    GlobalKey<FormState>? formKey,
+    String email,
+    String password,
+  ) async {
+    if (formKey!.currentState!.validate()) {
+      state = state.copyWith(isLoading: true);
+      final EmailLogInResults emailLogInResults =
+          await Auth().logInUserWithEmailandPassword(
+        email,
+        password,
+      );
+      String message = '';
+      if (emailLogInResults == EmailLogInResults.LogInCompleted) {
+        QuerySnapshot snapshot =
+            await FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
+                .gettingUserData(email);
+        await SharedPreferencesData().saveUserLoggedInStatus(true);
+        await SharedPreferencesData().saveUserEmailSF(email);
+        await SharedPreferencesData()
+            .saveUserNameSF(snapshot.docs[0]['name']); //naze
+        print(snapshot.docs[0]['name']);
+        nextScreenReplacement(context, const LoungeScreen());
+      } else if (emailLogInResults == EmailLogInResults.EmailNotVerified) {
+        message =
+            'Email not verified. \nPlease Verify your Email and then log in';
+      } else if (emailLogInResults == EmailLogInResults.EmailPasswordInvalid) {
+        message = 'Email Or Password Invalid';
+      } else
+        message = 'Log in not completed';
 
-    if (message != '')
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(message)));
-    state = state.copyWith(isLoading: false);
+      if (message != '')
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(message)));
+      state = state.copyWith(isLoading: false);
+    } else {
+      print('not Validated');
+    }
   }
 }

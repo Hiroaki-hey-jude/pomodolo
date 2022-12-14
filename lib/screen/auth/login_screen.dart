@@ -16,6 +16,11 @@ class LogInScreen extends ConsumerWidget {
     final notifier = ref.watch(loginStateProvider.notifier);
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
+    final formKey = GlobalKey<FormState>();
+    final TextEditingController emailEditingController =
+        TextEditingController();
+    final TextEditingController passwordEditingController =
+        TextEditingController();
     return Scaffold(
       body: state.isLoading
           ? Center(
@@ -41,11 +46,11 @@ class LogInScreen extends ConsumerWidget {
                   SafeArea(
                     child: SingleChildScrollView(
                       child: Form(
-                        key: state.formKey,
+                        key: formKey,
                         child: Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.fromLTRB(
-                              30, deviceHeight / 4.8, 30, 0),
+                              30, deviceHeight / 5.8, 30, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -82,15 +87,13 @@ class LogInScreen extends ConsumerWidget {
                                 child: Column(
                                   children: [
                                     TextFormField(
+                                      controller: emailEditingController,
                                       decoration: textInputDecoration.copyWith(
                                           labelText: "Email",
                                           prefixIcon: const Icon(
                                             Icons.email,
                                             color: Constant.blackColor,
                                           )),
-                                      onChanged: (val) {
-                                        notifier.getEmail(val);
-                                      },
 
                                       // check tha validation
                                       validator: (val) {
@@ -103,6 +106,7 @@ class LogInScreen extends ConsumerWidget {
                                     ),
                                     const SizedBox(height: 15),
                                     TextFormField(
+                                      controller: passwordEditingController,
                                       obscureText: true,
                                       decoration: textInputDecoration.copyWith(
                                           labelText: "Password",
@@ -116,9 +120,6 @@ class LogInScreen extends ConsumerWidget {
                                         } else {
                                           return null;
                                         }
-                                      },
-                                      onChanged: (val) {
-                                        notifier.getPassword(val);
                                       },
                                     ),
                                     const SizedBox(height: 20),
@@ -140,7 +141,12 @@ class LogInScreen extends ConsumerWidget {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         onPressed: () {
-                                          notifier.login(context);
+                                          notifier.login(
+                                            context,
+                                            formKey,
+                                            emailEditingController.text,
+                                            passwordEditingController.text,
+                                          );
                                         },
                                       ),
                                     ),
@@ -148,12 +154,14 @@ class LogInScreen extends ConsumerWidget {
                                     Text.rich(
                                       TextSpan(
                                         text: "アカウントを持っていませんか? ",
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 14),
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                        ),
                                         children: <TextSpan>[
                                           TextSpan(
                                             text: '登録',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: Colors.black,
                                                 decoration:
                                                     TextDecoration.underline),
