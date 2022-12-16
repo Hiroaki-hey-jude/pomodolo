@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$RegisterState {
   bool get isLoading => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
+  UserModel? get userModel => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RegisterStateCopyWith<RegisterState> get copyWith =>
@@ -29,7 +31,9 @@ abstract class $RegisterStateCopyWith<$Res> {
           RegisterState value, $Res Function(RegisterState) then) =
       _$RegisterStateCopyWithImpl<$Res, RegisterState>;
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String password, UserModel? userModel});
+
+  $UserModelCopyWith<$Res>? get userModel;
 }
 
 /// @nodoc
@@ -46,13 +50,35 @@ class _$RegisterStateCopyWithImpl<$Res, $Val extends RegisterState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? password = null,
+    Object? userModel = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      userModel: freezed == userModel
+          ? _value.userModel
+          : userModel // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res>? get userModel {
+    if (_value.userModel == null) {
+      return null;
+    }
+
+    return $UserModelCopyWith<$Res>(_value.userModel!, (value) {
+      return _then(_value.copyWith(userModel: value) as $Val);
+    });
   }
 }
 
@@ -64,7 +90,10 @@ abstract class _$$_RegisterStateCopyWith<$Res>
       __$$_RegisterStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String password, UserModel? userModel});
+
+  @override
+  $UserModelCopyWith<$Res>? get userModel;
 }
 
 /// @nodoc
@@ -79,12 +108,22 @@ class __$$_RegisterStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? password = null,
+    Object? userModel = freezed,
   }) {
     return _then(_$_RegisterState(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      userModel: freezed == userModel
+          ? _value.userModel
+          : userModel // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
     ));
   }
 }
@@ -92,15 +131,21 @@ class __$$_RegisterStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_RegisterState implements _RegisterState {
-  const _$_RegisterState({this.isLoading = false});
+  const _$_RegisterState(
+      {this.isLoading = false, this.password = '', this.userModel});
 
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final String password;
+  @override
+  final UserModel? userModel;
 
   @override
   String toString() {
-    return 'RegisterState(isLoading: $isLoading)';
+    return 'RegisterState(isLoading: $isLoading, password: $password, userModel: $userModel)';
   }
 
   @override
@@ -109,11 +154,15 @@ class _$_RegisterState implements _RegisterState {
         (other.runtimeType == runtimeType &&
             other is _$_RegisterState &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
+            (identical(other.userModel, userModel) ||
+                other.userModel == userModel));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading);
+  int get hashCode => Object.hash(runtimeType, isLoading, password, userModel);
 
   @JsonKey(ignore: true)
   @override
@@ -123,10 +172,17 @@ class _$_RegisterState implements _RegisterState {
 }
 
 abstract class _RegisterState implements RegisterState {
-  const factory _RegisterState({final bool isLoading}) = _$_RegisterState;
+  const factory _RegisterState(
+      {final bool isLoading,
+      final String password,
+      final UserModel? userModel}) = _$_RegisterState;
 
   @override
   bool get isLoading;
+  @override
+  String get password;
+  @override
+  UserModel? get userModel;
   @override
   @JsonKey(ignore: true)
   _$$_RegisterStateCopyWith<_$_RegisterState> get copyWith =>
