@@ -5,11 +5,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodolo/data/sharedpreference/sharedPreferencesData.dart';
 import 'package:pomodolo/screen/auth/login_screen.dart';
 import 'package:pomodolo/screen/lounge_screen.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 
 void main() async {
+  _setupTimeZone();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const ProviderScope(child: MyApp()));
+}
+
+// タイムゾーンを設定する
+Future<void> _setupTimeZone() async {
+  tz.initializeTimeZones();
+  var tokyo = tz.getLocation('Asia/Tokyo');
+  tz.setLocalLocation(tokyo);
 }
 
 class MyApp extends StatelessWidget {

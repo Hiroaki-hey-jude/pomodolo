@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$LoungeState {
   bool get isLoading => throw _privateConstructorUsedError;
+  Timer? get timer => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LoungeStateCopyWith<LoungeState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $LoungeStateCopyWith<$Res> {
           LoungeState value, $Res Function(LoungeState) then) =
       _$LoungeStateCopyWithImpl<$Res, LoungeState>;
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, Timer? timer});
 }
 
 /// @nodoc
@@ -46,12 +47,17 @@ class _$LoungeStateCopyWithImpl<$Res, $Val extends LoungeState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? timer = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      timer: freezed == timer
+          ? _value.timer
+          : timer // ignore: cast_nullable_to_non_nullable
+              as Timer?,
     ) as $Val);
   }
 }
@@ -64,7 +70,7 @@ abstract class _$$_LoungeStateCopyWith<$Res>
       __$$_LoungeStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, Timer? timer});
 }
 
 /// @nodoc
@@ -79,12 +85,17 @@ class __$$_LoungeStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? timer = freezed,
   }) {
     return _then(_$_LoungeState(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      timer: freezed == timer
+          ? _value.timer
+          : timer // ignore: cast_nullable_to_non_nullable
+              as Timer?,
     ));
   }
 }
@@ -92,15 +103,17 @@ class __$$_LoungeStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_LoungeState implements _LoungeState {
-  const _$_LoungeState({this.isLoading = false});
+  const _$_LoungeState({this.isLoading = false, this.timer});
 
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  final Timer? timer;
 
   @override
   String toString() {
-    return 'LoungeState(isLoading: $isLoading)';
+    return 'LoungeState(isLoading: $isLoading, timer: $timer)';
   }
 
   @override
@@ -109,11 +122,12 @@ class _$_LoungeState implements _LoungeState {
         (other.runtimeType == runtimeType &&
             other is _$_LoungeState &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.timer, timer) || other.timer == timer));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading);
+  int get hashCode => Object.hash(runtimeType, isLoading, timer);
 
   @JsonKey(ignore: true)
   @override
@@ -123,10 +137,13 @@ class _$_LoungeState implements _LoungeState {
 }
 
 abstract class _LoungeState implements LoungeState {
-  const factory _LoungeState({final bool isLoading}) = _$_LoungeState;
+  const factory _LoungeState({final bool isLoading, final Timer? timer}) =
+      _$_LoungeState;
 
   @override
   bool get isLoading;
+  @override
+  Timer? get timer;
   @override
   @JsonKey(ignore: true)
   _$$_LoungeStateCopyWith<_$_LoungeState> get copyWith =>
