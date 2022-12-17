@@ -8,13 +8,13 @@ part of 'pomodolo_model.dart';
 
 _$_PomodoloModel _$$_PomodoloModelFromJson(Map<String, dynamic> json) =>
     _$_PomodoloModel(
-      status: $enumDecodeNullable(_$StatusEnumMap, json['status']),
-      time: json['time'] as int?,
+      status: $enumDecode(_$StatusEnumMap, json['status']),
+      time: json['time'] as int,
     );
 
 Map<String, dynamic> _$$_PomodoloModelToJson(_$_PomodoloModel instance) =>
     <String, dynamic>{
-      'status': _$StatusEnumMap[instance.status],
+      'status': _$StatusEnumMap[instance.status]!,
       'time': instance.time,
     };
 
