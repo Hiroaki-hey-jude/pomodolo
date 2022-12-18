@@ -9,8 +9,8 @@ part 'pomodolo_model.g.dart';
 @freezed
 class PomodoloModel with _$PomodoloModel {
   const factory PomodoloModel({
-    Status? status,
-    int? time,
+    required Status status,
+    required int time,
   }) = _PomodoloModel;
 
   factory PomodoloModel.fromJson(Map<String, dynamic> json) =>

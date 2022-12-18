@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$LoungeState {
   bool get isLoading => throw _privateConstructorUsedError;
   Timer? get timer => throw _privateConstructorUsedError;
+  DateTime get time => throw _privateConstructorUsedError;
+  bool get isResting => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LoungeStateCopyWith<LoungeState> get copyWith =>
@@ -30,7 +32,7 @@ abstract class $LoungeStateCopyWith<$Res> {
           LoungeState value, $Res Function(LoungeState) then) =
       _$LoungeStateCopyWithImpl<$Res, LoungeState>;
   @useResult
-  $Res call({bool isLoading, Timer? timer});
+  $Res call({bool isLoading, Timer? timer, DateTime time, bool isResting});
 }
 
 /// @nodoc
@@ -48,6 +50,8 @@ class _$LoungeStateCopyWithImpl<$Res, $Val extends LoungeState>
   $Res call({
     Object? isLoading = null,
     Object? timer = freezed,
+    Object? time = null,
+    Object? isResting = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -58,6 +62,14 @@ class _$LoungeStateCopyWithImpl<$Res, $Val extends LoungeState>
           ? _value.timer
           : timer // ignore: cast_nullable_to_non_nullable
               as Timer?,
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isResting: null == isResting
+          ? _value.isResting
+          : isResting // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -70,7 +82,7 @@ abstract class _$$_LoungeStateCopyWith<$Res>
       __$$_LoungeStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, Timer? timer});
+  $Res call({bool isLoading, Timer? timer, DateTime time, bool isResting});
 }
 
 /// @nodoc
@@ -86,6 +98,8 @@ class __$$_LoungeStateCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = null,
     Object? timer = freezed,
+    Object? time = null,
+    Object? isResting = null,
   }) {
     return _then(_$_LoungeState(
       isLoading: null == isLoading
@@ -96,6 +110,14 @@ class __$$_LoungeStateCopyWithImpl<$Res>
           ? _value.timer
           : timer // ignore: cast_nullable_to_non_nullable
               as Timer?,
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isResting: null == isResting
+          ? _value.isResting
+          : isResting // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -103,17 +125,26 @@ class __$$_LoungeStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_LoungeState implements _LoungeState {
-  const _$_LoungeState({this.isLoading = false, this.timer});
+  const _$_LoungeState(
+      {this.isLoading = false,
+      this.timer,
+      required this.time,
+      this.isResting = false});
 
   @override
   @JsonKey()
   final bool isLoading;
   @override
   final Timer? timer;
+  @override
+  final DateTime time;
+  @override
+  @JsonKey()
+  final bool isResting;
 
   @override
   String toString() {
-    return 'LoungeState(isLoading: $isLoading, timer: $timer)';
+    return 'LoungeState(isLoading: $isLoading, timer: $timer, time: $time, isResting: $isResting)';
   }
 
   @override
@@ -123,11 +154,15 @@ class _$_LoungeState implements _LoungeState {
             other is _$_LoungeState &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.timer, timer) || other.timer == timer));
+            (identical(other.timer, timer) || other.timer == timer) &&
+            (identical(other.time, time) || other.time == time) &&
+            (identical(other.isResting, isResting) ||
+                other.isResting == isResting));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, timer);
+  int get hashCode =>
+      Object.hash(runtimeType, isLoading, timer, time, isResting);
 
   @JsonKey(ignore: true)
   @override
@@ -137,13 +172,20 @@ class _$_LoungeState implements _LoungeState {
 }
 
 abstract class _LoungeState implements LoungeState {
-  const factory _LoungeState({final bool isLoading, final Timer? timer}) =
-      _$_LoungeState;
+  const factory _LoungeState(
+      {final bool isLoading,
+      final Timer? timer,
+      required final DateTime time,
+      final bool isResting}) = _$_LoungeState;
 
   @override
   bool get isLoading;
   @override
   Timer? get timer;
+  @override
+  DateTime get time;
+  @override
+  bool get isResting;
   @override
   @JsonKey(ignore: true)
   _$$_LoungeStateCopyWith<_$_LoungeState> get copyWith =>

@@ -10,18 +10,18 @@ import 'package:timezone/timezone.dart' as tz;
 
 
 void main() async {
-  _setupTimeZone();
+  //_setupTimeZone();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const ProviderScope(child: MyApp()));
 }
 
 // タイムゾーンを設定する
-Future<void> _setupTimeZone() async {
-  tz.initializeTimeZones();
-  var tokyo = tz.getLocation('Asia/Tokyo');
-  tz.setLocalLocation(tokyo);
-}
+// Future<void> _setupTimeZone() async {
+//   tz.initializeTimeZones();
+//   var tokyo = tz.getLocation('Asia/Tokyo');
+//   tz.setLocalLocation(tokyo);
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
