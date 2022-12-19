@@ -88,7 +88,6 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
   void handleTimeIsOver() {
     if (state.timer != null &&
         state.timer!.isActive &&
-        state.time != null &&
         state.time == DateTime.utc(0, 0, 0)) {
       state.timer!.cancel();
     }
@@ -96,7 +95,8 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
 
   // タイマーを開始する
   void startTimer() {
-    if (pomodoloModel.status == Status.initial || pomodoloModel.status == Status.stopped) {
+    if (pomodoloModel.status == Status.initial ||
+        pomodoloModel.status == Status.stopped) {
       print(pomodoloModel.status);
       print(intervalType);
       state = state.copyWith(
@@ -104,6 +104,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         state =
             state.copyWith(time: state.time.add(const Duration(seconds: -1)));
         handleTimeIsOver();
+        pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
       }));
       pomodoloModel = pomodoloModel.copyWith(status: Status.started);
     }
@@ -112,21 +113,26 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
   void workOrRest(bool value) {
     if (value == true) {
       intervalType = IntervalType.rest;
+      pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
       state = state.copyWith(isResting: true);
       state = state.copyWith(
         time: DateTime.utc(0, 0, 0).add(
-          const Duration(minutes: 5),
+          const Duration(minutes: 1),
         ),
       );
       print(intervalType);
     } else {
       intervalType = IntervalType.work;
+      pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
       state = state.copyWith(isResting: false);
       state = state.copyWith(
         time: DateTime.utc(0, 0, 0).add(
           const Duration(minutes: 25),
         ),
       );
+    }
+    if (state.timer != null && pomodoloModel.status != Status.started) {
+      state.timer!.cancel(); //timerストップ
     }
   }
 
