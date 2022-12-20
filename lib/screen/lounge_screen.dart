@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pomodolo/shared/status.dart';
 import 'package:pomodolo/state/lounge_state/lounge_state.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:intl/intl.dart';
@@ -73,28 +74,51 @@ class LoungeScreen extends ConsumerWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 3, //横幅
                       height: 50, //高さ
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          side: const BorderSide(
-                            color: Colors.white,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        onPressed: () {
-                          notifier.startTimer();
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.play_arrow),
-                            SizedBox(width: 8),
-                            Text('Start'),
-                          ],
-                        ),
-                      ),
+                      child: state.pomodoloModel.status == Status.started
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                side: const BorderSide(
+                                  color: Colors.white,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              onPressed: () {
+                                notifier.stopTimer();
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.play_arrow),
+                                  SizedBox(width: 8),
+                                  Text('一時停止'),
+                                ],
+                              ),
+                            )
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                side: const BorderSide(
+                                  color: Colors.white,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              onPressed: () {
+                                notifier.startTimer();
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.play_arrow),
+                                  SizedBox(width: 8),
+                                  Text('Start'),
+                                ],
+                              ),
+                            ),
                     ),
                     SizedBox(width: 10),
                     SizedBox(
@@ -111,8 +135,10 @@ class LoungeScreen extends ConsumerWidget {
                           ),
                         ),
                         onPressed: () {
-                          if (state.timer != null && state.timer!.isActive) {
-                            state.timer!.cancel();
+                          print('koko');
+                          if (state.pomodoloModel.status == Status.stopped) {
+                            print('koko2');
+                            notifier.resetTimer();
                           }
                         },
                         child: Row(

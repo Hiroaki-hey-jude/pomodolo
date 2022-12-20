@@ -21,7 +21,6 @@ PomodoloModel _$PomodoloModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PomodoloModel {
   Status get status => throw _privateConstructorUsedError;
-  int get time => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +34,7 @@ abstract class $PomodoloModelCopyWith<$Res> {
           PomodoloModel value, $Res Function(PomodoloModel) then) =
       _$PomodoloModelCopyWithImpl<$Res, PomodoloModel>;
   @useResult
-  $Res call({Status status, int time});
+  $Res call({Status status});
 }
 
 /// @nodoc
@@ -52,17 +51,12 @@ class _$PomodoloModelCopyWithImpl<$Res, $Val extends PomodoloModel>
   @override
   $Res call({
     Object? status = null,
-    Object? time = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as Status,
-      time: null == time
-          ? _value.time
-          : time // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -75,7 +69,7 @@ abstract class _$$_PomodoloModelCopyWith<$Res>
       __$$_PomodoloModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status, int time});
+  $Res call({Status status});
 }
 
 /// @nodoc
@@ -90,17 +84,12 @@ class __$$_PomodoloModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
-    Object? time = null,
   }) {
     return _then(_$_PomodoloModel(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as Status,
-      time: null == time
-          ? _value.time
-          : time // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -108,19 +97,18 @@ class __$$_PomodoloModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_PomodoloModel implements _PomodoloModel {
-  const _$_PomodoloModel({required this.status, required this.time});
+  const _$_PomodoloModel({this.status = Status.initial});
 
   factory _$_PomodoloModel.fromJson(Map<String, dynamic> json) =>
       _$$_PomodoloModelFromJson(json);
 
   @override
+  @JsonKey()
   final Status status;
-  @override
-  final int time;
 
   @override
   String toString() {
-    return 'PomodoloModel(status: $status, time: $time)';
+    return 'PomodoloModel(status: $status)';
   }
 
   @override
@@ -128,13 +116,12 @@ class _$_PomodoloModel implements _PomodoloModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PomodoloModel &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.time, time) || other.time == time));
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, status, time);
+  int get hashCode => Object.hash(runtimeType, status);
 
   @JsonKey(ignore: true)
   @override
@@ -151,17 +138,13 @@ class _$_PomodoloModel implements _PomodoloModel {
 }
 
 abstract class _PomodoloModel implements PomodoloModel {
-  const factory _PomodoloModel(
-      {required final Status status,
-      required final int time}) = _$_PomodoloModel;
+  const factory _PomodoloModel({final Status status}) = _$_PomodoloModel;
 
   factory _PomodoloModel.fromJson(Map<String, dynamic> json) =
       _$_PomodoloModel.fromJson;
 
   @override
   Status get status;
-  @override
-  int get time;
   @override
   @JsonKey(ignore: true)
   _$$_PomodoloModelCopyWith<_$_PomodoloModel> get copyWith =>
