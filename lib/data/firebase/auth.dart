@@ -61,15 +61,4 @@ class Auth {
       return null;
     }
   }
-
-  // Future deleteUser() async {
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   final uid = user?.uid;
-  //   final msg =
-  //       await FirebaseFirestore.instance.collection('users').doc(uid).delete();
-  //   // ユーザーを削除
-  //   await user?.delete();
-  //   await FirebaseAuth.instance.signOut();
-  //   print('ユーザーを削除しました!');
-  // }
 }

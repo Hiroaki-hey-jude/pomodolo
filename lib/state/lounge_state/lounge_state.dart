@@ -136,31 +136,51 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
   }
 
   void workOrRest(bool value) {
-    if (value == true) {
-      intervalType = IntervalType.rest;
-      state = state.copyWith(
-        pomodoloModel: PomodoloModel(status: Status.stopped),
-      );
-      //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
-      state = state.copyWith(isResting: true);
-      state = state.copyWith(
-        time: DateTime.utc(0, 0, 0).add(
-          const Duration(minutes: 1),
-        ),
-      );
-      print(intervalType);
+    if(state.pomodoloModel.status == Status.initial) {
+      if(value == true) {
+        intervalType = IntervalType.rest;
+        state = state.copyWith(isResting: true);
+        state = state.copyWith(
+          time: DateTime.utc(0, 0, 0).add(
+            const Duration(minutes: 1),
+          ),
+        );
+      } else {
+        intervalType = IntervalType.work;
+        state = state.copyWith(isResting: false);
+        state = state.copyWith(
+          time: DateTime.utc(0, 0, 0).add(
+            const Duration(minutes: 25),
+          ),
+        );
+      }
     } else {
-      intervalType = IntervalType.work;
-      state = state.copyWith(
-        pomodoloModel: PomodoloModel(status: Status.stopped),
-      );
-      //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
-      state = state.copyWith(isResting: false);
-      state = state.copyWith(
-        time: DateTime.utc(0, 0, 0).add(
-          const Duration(minutes: 25),
-        ),
-      );
+      if (value == true) {
+        intervalType = IntervalType.rest;
+        state = state.copyWith(
+          pomodoloModel: PomodoloModel(status: Status.stopped),
+        );
+        //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
+        state = state.copyWith(isResting: true);
+        state = state.copyWith(
+          time: DateTime.utc(0, 0, 0).add(
+            const Duration(minutes: 1),
+          ),
+        );
+        print(intervalType);
+      } else {
+        intervalType = IntervalType.work;
+        state = state.copyWith(
+          pomodoloModel: PomodoloModel(status: Status.stopped),
+        );
+        //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
+        state = state.copyWith(isResting: false);
+        state = state.copyWith(
+          time: DateTime.utc(0, 0, 0).add(
+            const Duration(minutes: 25),
+          ),
+        );
+      }
     }
     if (state.timer != null && state.pomodoloModel.status != Status.started) {
       state.timer!.cancel(); //timerストップ
