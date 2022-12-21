@@ -23,3 +23,17 @@ const textInputDecoration = InputDecoration(
     borderSide: BorderSide(color: Constant.whiteColor, width: 2),
   ),
 );
+
+const textInputDecorationPopUp = InputDecoration(
+  labelStyle:
+      TextStyle(color: Constant.whiteColor, fontWeight: FontWeight.w300),
+  focusedBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Constant.blackColor, width: 2),
+  ),
+  enabledBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Constant.blackColor, width: 2),
+  ),
+  errorBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Constant.blackColor, width: 2),
+  ),
+);

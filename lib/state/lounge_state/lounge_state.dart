@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:intl/intl.dart';
 import 'package:pomodolo/data/model/pomodolo_model.dart';
 import 'package:pomodolo/shared/interval_type_enum.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -26,6 +25,7 @@ class LoungeState with _$LoungeState {
     Timer? timer,
     required DateTime time,
     @Default(false) bool isResting,
+    required PomodoloModel pomodoloModel,
   }) = _LoungeState;
 }
 
@@ -33,15 +33,17 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     with WidgetsBindingObserver {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  PomodoloModel pomodoloModel = PomodoloModel(status: Status.initial, time: 25);
-  // PomodoloModel workTime = PomodoloModel(25, Status.initial);
+  //PomodoloModel pomodoloModel = PomodoloModel(status: Status.initial);
+  //PomodoloModel workTime = PomodoloModel(25, Status.initial);
   bool? _isTimerPaused; // バックグラウンドに遷移した際にタイマーがもともと起動中で、停止したかどうか
   late DateTime? _pausedTime; // バックグラウンドに遷移した時間
   late int? _notificationId; // 通知ID
   IntervalType intervalType = IntervalType.work;
   LoungeStateNotifier()
       : super(LoungeState(
-            time: DateTime.utc(0, 0, 0).add(Duration(minutes: 25)))) {
+          time: DateTime.utc(0, 0, 0).add(Duration(minutes: 25)),
+          pomodoloModel: PomodoloModel(status: Status.initial),
+        )) {
     // タイムゾーンを初期化
     _initialize();
     tz.initializeTimeZones();
@@ -88,16 +90,38 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
   void handleTimeIsOver() {
     if (state.timer != null &&
         state.timer!.isActive &&
-        state.time != null &&
         state.time == DateTime.utc(0, 0, 0)) {
       state.timer!.cancel();
+      state = state.copyWith(
+        pomodoloModel: PomodoloModel(status: Status.stopped),
+      );
+      if (intervalType == IntervalType.rest) {
+        state = state.copyWith(
+            time: DateTime.utc(0, 0, 0).add(
+          const Duration(minutes: 5),
+        ));
+      } else {
+        state = state.copyWith(
+            time: DateTime.utc(0, 0, 0).add(
+          const Duration(minutes: 25),
+        ));
+      }
+      //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
     }
+  }
+
+  void stopTimer() {
+    state.timer!.cancel();
+    state = state.copyWith(
+      pomodoloModel: PomodoloModel(status: Status.stopped),
+    );
   }
 
   // タイマーを開始する
   void startTimer() {
-    if (pomodoloModel.status == Status.initial || pomodoloModel.status == Status.stopped) {
-      print(pomodoloModel.status);
+    if (state.pomodoloModel.status == Status.initial ||
+        state.pomodoloModel.status == Status.stopped) {
+      print(state.pomodoloModel.status);
       print(intervalType);
       state = state.copyWith(
           timer: Timer.periodic(const Duration(seconds: 1), (Timer timer) {
@@ -105,29 +129,81 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
             state.copyWith(time: state.time.add(const Duration(seconds: -1)));
         handleTimeIsOver();
       }));
-      pomodoloModel = pomodoloModel.copyWith(status: Status.started);
+      state =
+          state.copyWith(pomodoloModel: PomodoloModel(status: Status.started));
+      //pomodoloModel = pomodoloModel.copyWith(status: Status.started);
     }
   }
 
   void workOrRest(bool value) {
-    if (value == true) {
-      intervalType = IntervalType.rest;
-      state = state.copyWith(isResting: true);
-      state = state.copyWith(
-        time: DateTime.utc(0, 0, 0).add(
-          const Duration(minutes: 5),
-        ),
-      );
-      print(intervalType);
+    if(state.pomodoloModel.status == Status.initial) {
+      if(value == true) {
+        intervalType = IntervalType.rest;
+        state = state.copyWith(isResting: true);
+        state = state.copyWith(
+          time: DateTime.utc(0, 0, 0).add(
+            const Duration(minutes: 1),
+          ),
+        );
+      } else {
+        intervalType = IntervalType.work;
+        state = state.copyWith(isResting: false);
+        state = state.copyWith(
+          time: DateTime.utc(0, 0, 0).add(
+            const Duration(minutes: 25),
+          ),
+        );
+      }
     } else {
-      intervalType = IntervalType.work;
-      state = state.copyWith(isResting: false);
+      if (value == true) {
+        intervalType = IntervalType.rest;
+        state = state.copyWith(
+          pomodoloModel: PomodoloModel(status: Status.stopped),
+        );
+        //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
+        state = state.copyWith(isResting: true);
+        state = state.copyWith(
+          time: DateTime.utc(0, 0, 0).add(
+            const Duration(minutes: 1),
+          ),
+        );
+        print(intervalType);
+      } else {
+        intervalType = IntervalType.work;
+        state = state.copyWith(
+          pomodoloModel: PomodoloModel(status: Status.stopped),
+        );
+        //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
+        state = state.copyWith(isResting: false);
+        state = state.copyWith(
+          time: DateTime.utc(0, 0, 0).add(
+            const Duration(minutes: 25),
+          ),
+        );
+      }
+    }
+    if (state.timer != null && state.pomodoloModel.status != Status.started) {
+      state.timer!.cancel(); //timerストップ
+    }
+  }
+
+  void resetTimer() {
+    if (intervalType == IntervalType.work) {
       state = state.copyWith(
         time: DateTime.utc(0, 0, 0).add(
           const Duration(minutes: 25),
         ),
       );
+    } else {
+      state = state.copyWith(
+        time: DateTime.utc(0, 0, 0).add(
+          const Duration(minutes: 5),
+        ),
+      );
     }
+    state = state.copyWith(
+      pomodoloModel: PomodoloModel(status: Status.stopped),
+    );
   }
 
   //アプリがバックグラウンドに行った時の処理
@@ -138,7 +214,9 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     if (state.timer!.isActive) {
       _isTimerPaused = true;
       state.timer!.cancel(); // タイマーを停止する
-      pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
+      state =
+          state.copyWith(pomodoloModel: PomodoloModel(status: Status.stopped));
+      //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
       print('timer cancelled');
     }
     _pausedTime = DateTime.now(); // バックグラウンドに遷移した時間を記録
