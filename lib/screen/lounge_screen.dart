@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -261,6 +262,7 @@ class LoungeScreen extends ConsumerWidget {
                             ),
                           ),
                           onPressed: () {
+                            print(notifier.getUserInLounge());
                             print('koko');
                             if (state.pomodoloModel.status == Status.stopped) {
                               print('koko2');
@@ -318,6 +320,45 @@ class LoungeScreen extends ConsumerWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
+                          StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .where('isOnline', isEqualTo: true)
+                                .snapshots(),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return SingleChildScrollView(
+                                child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: ((context, index) {
+                                    // return Container(
+                                    //   width: 200,
+                                    //   height: 100,
+                                    //   child: ListTile(
+                                    //     leading: Text(snapshot.data!.docs[index]['name']),
+                                    //   ),
+                                    // );
+                                    return userTile(
+                                      snapshot.data!.docs[index]['name'],
+                                      snapshot.data!.docs[index]['profilePic'],
+                                      snapshot.data!.docs[index]['goalPomo'],
+                                      snapshot.data!.docs[index]['objective'],
+                                      snapshot.data!.docs[index]['uid'],
+                                      snapshot.data!.docs[index]['currentNumOfPomo'],
+                                    );
+                                  }),
+                                ),
+                              );
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -332,4 +373,23 @@ class LoungeScreen extends ConsumerWidget {
   }
 
   initialDialog(BuildContext context) {}
+
+  Widget userTile(
+      String userName, String profilePic, int goalPomo, String objective, String uid, int currentNumOfPomo) {
+    return Container(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: ListTile(
+          tileColor: Colors.yellow[100],
+          textColor: Colors.black54,
+          leading: profilePicturesWidget(uid),
+          title: Text(userName,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          subtitle: Text(objective),
+          trailing: goalPomoWidget(uid),
+        ),
+      ),
+    );
+  }
 }

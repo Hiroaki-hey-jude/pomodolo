@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pomodolo/data/firebase/firestore.dart';
 import 'package:pomodolo/data/model/pomodolo_model.dart';
 import 'package:pomodolo/shared/interval_type_enum.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -26,6 +29,7 @@ class LoungeState with _$LoungeState {
     required DateTime time,
     @Default(false) bool isResting,
     required PomodoloModel pomodoloModel,
+    Stream? userInLounge,
   }) = _LoungeState;
 }
 
@@ -62,10 +66,22 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         break;
       case AppLifecycleState.paused:
         print('停止されたときの処理');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update(
+          {'isOnline': false},
+        );
         handleOnPaused();
         break;
       case AppLifecycleState.resumed:
         print('再開されたときの処理');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update(
+          {'isOnline': true},
+        );
         handleOnResumed();
         break;
       case AppLifecycleState.detached:
@@ -127,15 +143,15 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
             state.copyWith(time: state.time.add(const Duration(seconds: -1)));
         handleTimeIsOver();
       }));
-      state =
-          state.copyWith(pomodoloModel: const PomodoloModel(status: Status.started));
+      state = state.copyWith(
+          pomodoloModel: const PomodoloModel(status: Status.started));
       //pomodoloModel = pomodoloModel.copyWith(status: Status.started);
     }
   }
 
   void workOrRest(bool value) {
-    if(state.pomodoloModel.status == Status.initial) {
-      if(value == true) {
+    if (state.pomodoloModel.status == Status.initial) {
+      if (value == true) {
         intervalType = IntervalType.rest;
         state = state.copyWith(isResting: true);
         state = state.copyWith(
@@ -209,11 +225,12 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     if (state.timer == null) {
       return;
     }
+    print('offlineになりました');
     if (state.timer!.isActive) {
       _isTimerPaused = true;
       state.timer!.cancel(); // タイマーを停止する
-      state =
-          state.copyWith(pomodoloModel: const PomodoloModel(status: Status.stopped));
+      state = state.copyWith(
+          pomodoloModel: const PomodoloModel(status: Status.stopped));
       //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
       print('timer cancelled');
     }
@@ -270,5 +287,15 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
       androidAllowWhileIdle: true,
     );
     return notificationId;
+  }
+
+  getUserInLounge() {
+    print(FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
+        .searchOnlinePeople());
+    state = state.copyWith(
+        userInLounge: FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
+            .searchOnlinePeople());
+    print('${state}はなに');
+    return state;
   }
 }

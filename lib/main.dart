@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodolo/data/sharedpreference/sharedPreferencesData.dart';
 import 'package:pomodolo/screen/auth/login_screen.dart';
+import 'package:pomodolo/screen/home_screen.dart';
 import 'package:pomodolo/screen/lounge_screen.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -89,7 +90,7 @@ class _MyAppHomeState extends State<MyAppHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isSignedIn ? const LoungeScreen() : const LogInScreen(),
+      body: _isSignedIn ? const HomeScreen() : const LogInScreen(),
     );
   }
 
