@@ -38,7 +38,19 @@ class FireStore {
     return querySnapshot;
   }
 
-  searchOnlinePeople() {
-    return userCollection.where('isOnline', isEqualTo: true).snapshots();
+  getCurrentPomo(String uid) async {
+    final currentPomo = await userCollection.doc(uid).get();
+    return currentPomo;
   }
+
+  startTimer(int goalPomo, String objectve, String uid) {
+    print('kokohadokkokod');
+    userCollection.doc(uid).update({
+      'goalPomo': goalPomo,
+      'isOnline': true,
+      'objective': objectve,
+      'currentNumOfPomo': 0,
+    });
+  }
+
 }

@@ -29,7 +29,7 @@ class LoungeState with _$LoungeState {
     required DateTime time,
     @Default(false) bool isResting,
     required PomodoloModel pomodoloModel,
-    Stream? userInLounge,
+    int? currentPomo,
   }) = _LoungeState;
 }
 
@@ -120,6 +120,16 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
           const Duration(minutes: 25),
         ));
       }
+      if (state.isResting == false) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update(
+          {
+            'currentNumOfPomo': FieldValue.increment(1),
+          },
+        );
+      }
       //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
     }
   }
@@ -164,7 +174,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         state = state.copyWith(isResting: false);
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 25),
+            const Duration(minutes: 1),
           ),
         );
       }
@@ -191,7 +201,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         state = state.copyWith(isResting: false);
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 25),
+            const Duration(minutes: 1),
           ),
         );
       }
@@ -251,7 +261,21 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
             .difference(DateTime.utc(0, 0, 0))
             .compareTo(backgroundDuration) <
         0) {
-      state = state.copyWith(time: DateTime.utc(0, 0, 0)); // 時間をリセットする
+      state = state.copyWith(
+        time: DateTime.utc(0, 0, 0).add(
+          const Duration(minutes: 25),
+        ),
+      );
+      if (state.isResting == false) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update(
+          {
+            'currentNumOfPomo': FieldValue.increment(1),
+          },
+        );
+      }
     } else {
       state = state.copyWith(
           time: state.time.add(-backgroundDuration)); // バックグラウンド経過時間分時間を進める
@@ -289,13 +313,12 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     return notificationId;
   }
 
-  getUserInLounge() {
-    print(FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
-        .searchOnlinePeople());
+  initialStart(String objectve, int goalPomo, String uid) {
+    FireStore().startTimer(goalPomo, objectve, uid);
+  }
+
+  changeState() {
     state = state.copyWith(
-        userInLounge: FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
-            .searchOnlinePeople());
-    print('${state}はなに');
-    return state;
+        pomodoloModel: const PomodoloModel(status: Status.initial));
   }
 }

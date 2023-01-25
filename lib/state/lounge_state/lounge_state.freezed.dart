@@ -21,7 +21,7 @@ mixin _$LoungeState {
   DateTime get time => throw _privateConstructorUsedError;
   bool get isResting => throw _privateConstructorUsedError;
   PomodoloModel get pomodoloModel => throw _privateConstructorUsedError;
-  Stream<dynamic>? get userInLounge => throw _privateConstructorUsedError;
+  int? get currentPomo => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LoungeStateCopyWith<LoungeState> get copyWith =>
@@ -40,7 +40,7 @@ abstract class $LoungeStateCopyWith<$Res> {
       DateTime time,
       bool isResting,
       PomodoloModel pomodoloModel,
-      Stream<dynamic>? userInLounge});
+      int? currentPomo});
 
   $PomodoloModelCopyWith<$Res> get pomodoloModel;
 }
@@ -63,7 +63,7 @@ class _$LoungeStateCopyWithImpl<$Res, $Val extends LoungeState>
     Object? time = null,
     Object? isResting = null,
     Object? pomodoloModel = null,
-    Object? userInLounge = freezed,
+    Object? currentPomo = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -86,10 +86,10 @@ class _$LoungeStateCopyWithImpl<$Res, $Val extends LoungeState>
           ? _value.pomodoloModel
           : pomodoloModel // ignore: cast_nullable_to_non_nullable
               as PomodoloModel,
-      userInLounge: freezed == userInLounge
-          ? _value.userInLounge
-          : userInLounge // ignore: cast_nullable_to_non_nullable
-              as Stream<dynamic>?,
+      currentPomo: freezed == currentPomo
+          ? _value.currentPomo
+          : currentPomo // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 
@@ -116,7 +116,7 @@ abstract class _$$_LoungeStateCopyWith<$Res>
       DateTime time,
       bool isResting,
       PomodoloModel pomodoloModel,
-      Stream<dynamic>? userInLounge});
+      int? currentPomo});
 
   @override
   $PomodoloModelCopyWith<$Res> get pomodoloModel;
@@ -138,7 +138,7 @@ class __$$_LoungeStateCopyWithImpl<$Res>
     Object? time = null,
     Object? isResting = null,
     Object? pomodoloModel = null,
-    Object? userInLounge = freezed,
+    Object? currentPomo = freezed,
   }) {
     return _then(_$_LoungeState(
       isLoading: null == isLoading
@@ -161,10 +161,10 @@ class __$$_LoungeStateCopyWithImpl<$Res>
           ? _value.pomodoloModel
           : pomodoloModel // ignore: cast_nullable_to_non_nullable
               as PomodoloModel,
-      userInLounge: freezed == userInLounge
-          ? _value.userInLounge
-          : userInLounge // ignore: cast_nullable_to_non_nullable
-              as Stream<dynamic>?,
+      currentPomo: freezed == currentPomo
+          ? _value.currentPomo
+          : currentPomo // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -178,7 +178,7 @@ class _$_LoungeState implements _LoungeState {
       required this.time,
       this.isResting = false,
       required this.pomodoloModel,
-      this.userInLounge});
+      this.currentPomo});
 
   @override
   @JsonKey()
@@ -193,11 +193,11 @@ class _$_LoungeState implements _LoungeState {
   @override
   final PomodoloModel pomodoloModel;
   @override
-  final Stream<dynamic>? userInLounge;
+  final int? currentPomo;
 
   @override
   String toString() {
-    return 'LoungeState(isLoading: $isLoading, timer: $timer, time: $time, isResting: $isResting, pomodoloModel: $pomodoloModel, userInLounge: $userInLounge)';
+    return 'LoungeState(isLoading: $isLoading, timer: $timer, time: $time, isResting: $isResting, pomodoloModel: $pomodoloModel, currentPomo: $currentPomo)';
   }
 
   @override
@@ -213,13 +213,13 @@ class _$_LoungeState implements _LoungeState {
                 other.isResting == isResting) &&
             (identical(other.pomodoloModel, pomodoloModel) ||
                 other.pomodoloModel == pomodoloModel) &&
-            (identical(other.userInLounge, userInLounge) ||
-                other.userInLounge == userInLounge));
+            (identical(other.currentPomo, currentPomo) ||
+                other.currentPomo == currentPomo));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, isLoading, timer, time,
-      isResting, pomodoloModel, userInLounge);
+      isResting, pomodoloModel, currentPomo);
 
   @JsonKey(ignore: true)
   @override
@@ -235,7 +235,7 @@ abstract class _LoungeState implements LoungeState {
       required final DateTime time,
       final bool isResting,
       required final PomodoloModel pomodoloModel,
-      final Stream<dynamic>? userInLounge}) = _$_LoungeState;
+      final int? currentPomo}) = _$_LoungeState;
 
   @override
   bool get isLoading;
@@ -248,7 +248,7 @@ abstract class _LoungeState implements LoungeState {
   @override
   PomodoloModel get pomodoloModel;
   @override
-  Stream<dynamic>? get userInLounge;
+  int? get currentPomo;
   @override
   @JsonKey(ignore: true)
   _$$_LoungeStateCopyWith<_$_LoungeState> get copyWith =>

@@ -64,7 +64,7 @@ Widget profilePicturesWidget(String id) {
 
 Widget goalPomoWidget(String id) {
   return Container(
-    width: 50,
+    width: 70,
     child: StreamBuilder(
         stream:
             FirebaseFirestore.instance.collection('users').doc(id).snapshots(),
@@ -78,3 +78,8 @@ Widget goalPomoWidget(String id) {
         }),
   );
 }
+
+showDialogForStart(BuildContext context) {
+  
+}
+
