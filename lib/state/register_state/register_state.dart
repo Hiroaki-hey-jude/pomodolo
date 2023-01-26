@@ -56,7 +56,7 @@ class RegisterStateNotifier extends StateNotifier<RegisterState> {
     String password,
   ) async {
     // if (state.formKey != null) {
-    if (formKey!.currentState!.validate()) {
+    // if (formKey!.currentState!.validate()) {
       state = state.copyWith(isLoading: true);
       // state =
       //     state.copyWith(userModel: UserModel(userName: name, email: email));
@@ -82,9 +82,9 @@ class RegisterStateNotifier extends StateNotifier<RegisterState> {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(message)));
       state = state.copyWith(isLoading: false);
-    } else {
-      print('not Validated');
-    }
+    // } else {
+    //   print('not Validated');
+    // }
     // } else {
     //   print('not Validated');
     // }

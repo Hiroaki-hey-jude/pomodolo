@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pomodolo/data/firebase/firestore.dart';
 import 'package:pomodolo/data/model/pomodolo_model.dart';
+import 'package:pomodolo/screen/profile_screen.dart';
 import 'package:pomodolo/screen/widgets/widgets.dart';
 import 'package:pomodolo/shared/status.dart';
 import 'package:pomodolo/state/lounge_state/lounge_state.dart';
@@ -20,15 +21,114 @@ class LoungeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isOn = false;
-    // final state = ref.watch(loungeStateProvider);
-    // final notifier = ref.watch(loungeStateProvider.notifier);
     final TextEditingController numberOfPomoEditingController =
         TextEditingController();
     final TextEditingController goaltaskEditingController =
         TextEditingController();
-    final uid;
     return Scaffold(
+      drawer: Drawer(
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.black,
+                image: DecorationImage(
+                  image: AssetImage('assets/sub.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
+              child: ListView(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.person),
+                    title: const Text(
+                      'プロフィール',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      nextScreen(context, const ProfileScreen());
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.notes_sharp,
+                    ),
+                    title: const Text(
+                      '利用規約',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      nextScreen(context, const ProfileScreen());
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.notes,
+                      color: Colors.black,
+                    ),
+                    title: const Text(
+                      'プライバシーポリシー',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      nextScreen(context, const ProfileScreen());
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.mail_outline,
+                      color: Colors.white,
+                    ),
+                    title: const Text(
+                      'お問い合わせ',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      nextScreen(context, const ProfileScreen());
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                    ),
+                    title: const Text(
+                      'ログアウト',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      nextScreen(context, const ProfileScreen());
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.logout_sharp,
+                      color: Colors.black,
+                    ),
+                    title: const Text(
+                      '退会',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      nextScreen(context, const ProfileScreen());
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         elevation: 0,
         title: const Text('Lounge'),
@@ -133,7 +233,8 @@ class LoungeScreen extends StatelessWidget {
                                   ),
                                   onPressed: () {
                                     if (state.pomodoloModel.status ==
-                                        Status.initial) {
+                                            Status.initial &&
+                                        state.isResting == false) {
                                       showDialog(
                                           barrierDismissible: true,
                                           context: context,
@@ -264,7 +365,8 @@ class LoungeScreen extends StatelessWidget {
                                                           notifier.startTimer();
                                                           goaltaskEditingController
                                                               .clear();
-                                                          numberOfPomoEditingController.clear();
+                                                          numberOfPomoEditingController
+                                                              .clear();
                                                           Navigator.pop(
                                                               context);
                                                         },
@@ -342,7 +444,7 @@ class LoungeScreen extends StatelessWidget {
                           width: 1,
                           color: Constant.whiteColor,
                         ),
-                        color: Constant.whiteColor.withOpacity(0.3),
+                        color: Colors.grey.withOpacity(0.5),
                         boxShadow: const [
                           BoxShadow(
                               color: Colors.black12,
@@ -361,13 +463,45 @@ class LoungeScreen extends StatelessWidget {
                         children: [
                           const SizedBox(height: 8),
                           const Text(
-                            'Lounge',
+                            'Online',
                             style: TextStyle(
                               fontSize: 20,
                               color: Constant.blackColor,
                             ),
                           ),
                           const SizedBox(height: 8),
+                          Container(
+                            color: const Color.fromARGB(255, 159, 199, 232)
+                                .withOpacity(0.4),
+                            child: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('users')
+                                  .where('uid',
+                                      isEqualTo: FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                  .snapshots(),
+                              builder: (context, AsyncSnapshot snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                if (snapshot.data!.docs[0]['isOnline'] ==
+                                    true) {
+                                  return myselfTile(
+                                    snapshot.data!.docs[0]['name'],
+                                    snapshot.data!.docs[0]['profilePic'],
+                                    snapshot.data!.docs[0]['goalPomo'],
+                                    snapshot.data!.docs[0]['objective'],
+                                    snapshot.data!.docs[0]['uid'],
+                                    snapshot.data!.docs[0]['currentNumOfPomo'],
+                                  );
+                                }
+                                return Container();
+                              },
+                            ),
+                          ),
                           StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection('users')
@@ -413,22 +547,30 @@ class LoungeScreen extends StatelessWidget {
     );
   }
 
-  initialDialog(BuildContext context) {}
-
-  Widget userTile(String userName, String profilePic, int goalPomo,
+  Widget myselfTile(String userName, String profilePic, int goalPomo,
       String objective, String uid, int currentNumOfPomo) {
     if (currentNumOfPomo == goalPomo) {
-      print('目標達成');
       return Consumer(builder: (context, ref, child) {
         final notifier = ref.watch(loungeStateProvider.notifier);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           notifier.changeState();
         });
-        return const AlertDialog(
-          title: Text(
-            'お疲れ様でした！',
-            textAlign: TextAlign.left,
-          ),
+        return Column(
+          children: const [
+            SizedBox(height: 10),
+            Text('お疲れ様でした！\nポモゴールを達成しました！',
+                style: TextStyle(fontWeight: FontWeight.w700),
+                textAlign: TextAlign.center),
+            SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'まだ作業を続る場合は\nStartボタンを押してください。',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(height: 10),
+          ],
         );
       });
     }
@@ -441,13 +583,45 @@ class LoungeScreen extends StatelessWidget {
           textColor: Colors.black54,
           leading: profilePicturesWidget(uid),
           title: Text(userName,
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-          subtitle: Text(objective),
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white)),
+          subtitle: Text(
+            objective,
+            style: const TextStyle(color: Colors.white),
+          ),
           trailing: goalPomoWidget(uid),
         ),
       ),
     );
   }
 
-  showDialogForStart(BuildContext context) {}
+  Widget userTile(String userName, String profilePic, int goalPomo,
+      String objective, String uid, int currentNumOfPomo) {
+    return uid != FirebaseAuth.instance.currentUser!.uid
+        ? Container(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: ListTile(
+                tileColor: Colors.yellow[100],
+                textColor: Colors.black54,
+                leading: profilePicturesWidget(uid),
+                title: Text(userName,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white60,
+                    )),
+                subtitle: Text(
+                  objective,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white70,
+                  ),
+                ),
+                trailing: goalPomoWidget(uid),
+              ),
+            ),
+          )
+        : Container();
+  }
 }

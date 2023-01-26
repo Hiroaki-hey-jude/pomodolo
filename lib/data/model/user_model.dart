@@ -14,6 +14,7 @@ class UserModel with _$UserModel {
     @Default('') String objective,
     @Default(0) int goalPomo,
     @Default(0) int currentNumOfPomo,
+    @Default(0) int totalPomo,
     @Default(false) bool isOnline,
   }) = _UserModel;
 

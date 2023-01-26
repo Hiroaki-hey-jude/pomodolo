@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pomodolo/data/model/user_model.dart';
 
 class FireStore {
@@ -15,9 +16,10 @@ class FireStore {
       email: email,
       iconUrl: '',
       objective: '',
-      goalPomo: 0,
+      goalPomo: 3,
       currentNumOfPomo: 0,
       isOnline: false,
+      totalPomo: 0,
     );
     //await userCollection.doc(uid).set(user.toFirestore());
     return await userCollection.doc(uid).set({
@@ -29,6 +31,7 @@ class FireStore {
       'goalPomo': user.goalPomo,
       'currentNumOfPomo': user.currentNumOfPomo,
       'isOnline': user.isOnline,
+      'totalPomo': user.totalPomo,
     });
   }
 
@@ -53,4 +56,12 @@ class FireStore {
     });
   }
 
+  toggleOnline(bool present) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'isOnline': present,
+    });
+  }
 }

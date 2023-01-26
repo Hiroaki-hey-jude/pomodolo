@@ -52,7 +52,7 @@ Widget profilePicturesWidget(String id) {
           String originalImgURL = snapshot.data!.get('profilePic') as String !=
                   ''
               ? snapshot.data!.get('profilePic') as String
-              : 'https://msp.c.yimg.jp/images/v2/FUTi93tXq405grZVGgDqGx5cm8knTLo61O84kVTxOan841a30-aIJSoqkmlQNsP4-Qv0KVqX9M9vYFUiwJk7Td3V7vPM0KOdWqrUituYvtnSar9x6L84qPLmIBtWCypFJz0KXlr7qn7fBK3IAzXNoKqa8nXN1Pz9ov4LKOTDRDV8wVWo1nQMCGO9E4o6K36McUAylQDeTQRNF9Op3JfY2iTFAun4IWDGV3qwbY8bHxZl4xSjUUv4fCzYvGjh2ca9bpeFmXd2K-uN80LrsmWEALH9sYrv73X1ZPxpgNLPBEe_7WG2Ffw6G1V4ZRj10gSJAhhlIWmL3Dppp79xAsruIw==/800px-Solid_blue.svg.png?errorImage=false';
+              : 'https://images.unsplash.com/flagged/photo-1572392640988-ba48d1a74457?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80';
           print(originalImgURL);
           return CircleAvatar(
             radius: 30,
@@ -73,13 +73,11 @@ Widget goalPomoWidget(String id) {
             return Center(child: CircularProgressIndicator());
           return Text(
             '${snapshot.data!.get('currentNumOfPomo')}/${snapshot.data!.get('goalPomo')}ポモ',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style:
+                TextStyle(fontWeight: FontWeight.bold, color: Colors.white60),
           );
         }),
   );
 }
 
-showDialogForStart(BuildContext context) {
-  
-}
-
+showDialogForStart(BuildContext context) {}

@@ -12,6 +12,7 @@ import 'package:pomodolo/shared/interval_type_enum.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../../data/sharedpreference/sharedPreferencesData.dart';
 import '../../shared/status.dart';
 
 part 'lounge_state.freezed.dart';
@@ -23,14 +24,14 @@ final loungeStateProvider =
 
 @freezed
 class LoungeState with _$LoungeState {
-  const factory LoungeState({
-    @Default(false) bool isLoading,
-    Timer? timer,
-    required DateTime time,
-    @Default(false) bool isResting,
-    required PomodoloModel pomodoloModel,
-    int? currentPomo,
-  }) = _LoungeState;
+  const factory LoungeState(
+      {@Default(false) bool isLoading,
+      Timer? timer,
+      required DateTime time,
+      @Default(false) bool isResting,
+      required PomodoloModel pomodoloModel,
+      int? currentPomo,
+      String? userName}) = _LoungeState;
 }
 
 class LoungeStateNotifier extends StateNotifier<LoungeState>
@@ -51,6 +52,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     tz.initializeTimeZones();
     var tokyo = tz.getLocation('Asia/Tokyo');
     tz.setLocalLocation(tokyo);
+    getUserData();
   }
 
   void _initialize() {
@@ -66,22 +68,12 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         break;
       case AppLifecycleState.paused:
         print('停止されたときの処理');
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update(
-          {'isOnline': false},
-        );
+        FireStore().toggleOnline(false);
         handleOnPaused();
         break;
       case AppLifecycleState.resumed:
         print('再開されたときの処理');
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update(
-          {'isOnline': true},
-        );
+        FireStore().toggleOnline(true);
         handleOnResumed();
         break;
       case AppLifecycleState.detached:
@@ -96,9 +88,11 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     super.dispose();
   }
 
-  // void handleOnPaused() {
-  //   if()
-  // }
+  getUserData() async {
+    await SharedPreferencesData().getUserNameFromSF().then((value) {
+      state = state.copyWith(userName: value);
+    });
+  }
 
   // 時間がゼロになったらタイマーを止める
   void handleTimeIsOver() {
@@ -127,6 +121,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
             .update(
           {
             'currentNumOfPomo': FieldValue.increment(1),
+            'totalPomo': FieldValue.increment(1),
           },
         );
       }
@@ -143,7 +138,8 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
 
   // タイマーを開始する
   void startTimer() {
-    if (state.pomodoloModel.status == Status.initial ||
+    if ((state.pomodoloModel.status == Status.initial &&
+            intervalType == IntervalType.work) ||
         state.pomodoloModel.status == Status.stopped) {
       print(state.pomodoloModel.status);
       print(intervalType);
@@ -155,12 +151,17 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
       }));
       state = state.copyWith(
           pomodoloModel: const PomodoloModel(status: Status.started));
+      print(state.pomodoloModel.status);
+      print('startボタン押した後');
       //pomodoloModel = pomodoloModel.copyWith(status: Status.started);
     }
   }
 
   void workOrRest(bool value) {
+    print(state.pomodoloModel.status);
+    print(intervalType);
     if (state.pomodoloModel.status == Status.initial) {
+      print('ifの中');
       if (value == true) {
         intervalType = IntervalType.rest;
         state = state.copyWith(isResting: true);
@@ -261,11 +262,18 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
             .difference(DateTime.utc(0, 0, 0))
             .compareTo(backgroundDuration) <
         0) {
-      state = state.copyWith(
-        time: DateTime.utc(0, 0, 0).add(
-          const Duration(minutes: 25),
-        ),
-      );
+      if (state.isResting == true) {
+        state = state.copyWith(
+            time: DateTime.utc(0, 0, 0).add(
+          const Duration(minutes: 5),
+        ));
+      } else {
+        state = state.copyWith(
+          time: DateTime.utc(0, 0, 0).add(
+            const Duration(minutes: 25),
+          ),
+        );
+      }
       if (state.isResting == false) {
         FirebaseFirestore.instance
             .collection('users')
@@ -287,6 +295,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     }
     _isTimerPaused = false; // リセット
     _notificationId = null; // リセット
+    print('${_notificationId}リセットできてる？');
     _pausedTime = null;
   }
 

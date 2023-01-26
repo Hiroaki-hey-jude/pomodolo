@@ -27,6 +27,7 @@ mixin _$UserModel {
   String get objective => throw _privateConstructorUsedError;
   int get goalPomo => throw _privateConstructorUsedError;
   int get currentNumOfPomo => throw _privateConstructorUsedError;
+  int get totalPomo => throw _privateConstructorUsedError;
   bool get isOnline => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,6 +49,7 @@ abstract class $UserModelCopyWith<$Res> {
       String objective,
       int goalPomo,
       int currentNumOfPomo,
+      int totalPomo,
       bool isOnline});
 }
 
@@ -71,6 +73,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? objective = null,
     Object? goalPomo = null,
     Object? currentNumOfPomo = null,
+    Object? totalPomo = null,
     Object? isOnline = null,
   }) {
     return _then(_value.copyWith(
@@ -102,6 +105,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.currentNumOfPomo
           : currentNumOfPomo // ignore: cast_nullable_to_non_nullable
               as int,
+      totalPomo: null == totalPomo
+          ? _value.totalPomo
+          : totalPomo // ignore: cast_nullable_to_non_nullable
+              as int,
       isOnline: null == isOnline
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
@@ -125,6 +132,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       String objective,
       int goalPomo,
       int currentNumOfPomo,
+      int totalPomo,
       bool isOnline});
 }
 
@@ -146,6 +154,7 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? objective = null,
     Object? goalPomo = null,
     Object? currentNumOfPomo = null,
+    Object? totalPomo = null,
     Object? isOnline = null,
   }) {
     return _then(_$_UserModel(
@@ -177,6 +186,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.currentNumOfPomo
           : currentNumOfPomo // ignore: cast_nullable_to_non_nullable
               as int,
+      totalPomo: null == totalPomo
+          ? _value.totalPomo
+          : totalPomo // ignore: cast_nullable_to_non_nullable
+              as int,
       isOnline: null == isOnline
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
@@ -196,6 +209,7 @@ class _$_UserModel implements _UserModel {
       this.objective = '',
       this.goalPomo = 0,
       this.currentNumOfPomo = 0,
+      this.totalPomo = 0,
       this.isOnline = false});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
@@ -224,11 +238,14 @@ class _$_UserModel implements _UserModel {
   final int currentNumOfPomo;
   @override
   @JsonKey()
+  final int totalPomo;
+  @override
+  @JsonKey()
   final bool isOnline;
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, userName: $userName, email: $email, iconUrl: $iconUrl, objective: $objective, goalPomo: $goalPomo, currentNumOfPomo: $currentNumOfPomo, isOnline: $isOnline)';
+    return 'UserModel(uid: $uid, userName: $userName, email: $email, iconUrl: $iconUrl, objective: $objective, goalPomo: $goalPomo, currentNumOfPomo: $currentNumOfPomo, totalPomo: $totalPomo, isOnline: $isOnline)';
   }
 
   @override
@@ -247,6 +264,8 @@ class _$_UserModel implements _UserModel {
                 other.goalPomo == goalPomo) &&
             (identical(other.currentNumOfPomo, currentNumOfPomo) ||
                 other.currentNumOfPomo == currentNumOfPomo) &&
+            (identical(other.totalPomo, totalPomo) ||
+                other.totalPomo == totalPomo) &&
             (identical(other.isOnline, isOnline) ||
                 other.isOnline == isOnline));
   }
@@ -254,7 +273,7 @@ class _$_UserModel implements _UserModel {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uid, userName, email, iconUrl,
-      objective, goalPomo, currentNumOfPomo, isOnline);
+      objective, goalPomo, currentNumOfPomo, totalPomo, isOnline);
 
   @JsonKey(ignore: true)
   @override
@@ -279,6 +298,7 @@ abstract class _UserModel implements UserModel {
       final String objective,
       final int goalPomo,
       final int currentNumOfPomo,
+      final int totalPomo,
       final bool isOnline}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -298,6 +318,8 @@ abstract class _UserModel implements UserModel {
   int get goalPomo;
   @override
   int get currentNumOfPomo;
+  @override
+  int get totalPomo;
   @override
   bool get isOnline;
   @override

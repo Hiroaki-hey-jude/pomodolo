@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodolo/data/firebase/auth.dart';
 import 'package:pomodolo/screen/auth/login_screen.dart';
+import 'package:pomodolo/screen/auth/register_screen.dart';
 import 'package:pomodolo/screen/lounge_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
