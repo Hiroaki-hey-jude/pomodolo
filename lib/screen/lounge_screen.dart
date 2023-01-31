@@ -566,7 +566,7 @@ class LoungeScreen extends StatelessWidget {
 
   Widget myselfTile(String userName, String profilePic, int goalPomo,
       String objective, String uid, int currentNumOfPomo) {
-    if (currentNumOfPomo == goalPomo) {
+    if (currentNumOfPomo == goalPomo && goalPomo != 0) {
       return Consumer(builder: (context, ref, child) {
         final notifier = ref.watch(loungeStateProvider.notifier);
         WidgetsBinding.instance.addPostFrameCallback((_) {
