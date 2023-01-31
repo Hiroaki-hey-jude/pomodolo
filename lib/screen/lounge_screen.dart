@@ -84,8 +84,8 @@ class LoungeScreen extends StatelessWidget {
                     ),
                     onTap: () async {
                       Navigator.of(context).pop();
-                      final url =
-                          Uri.parse('https://cut-primula-dac.notion.site/8d53f61435014ba689333c514befb566');
+                      final url = Uri.parse(
+                          'https://cut-primula-dac.notion.site/8d53f61435014ba689333c514befb566');
                       if (!await launchUrl(url)) {
                       } else {
                         throw 'このURLにはアクセスできません';
@@ -425,12 +425,8 @@ class LoungeScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              print('koko');
-                              if (state.pomodoloModel.status ==
-                                  Status.stopped) {
-                                print('koko2');
-                                notifier.resetTimer();
-                              }
+                              notifier.stopTimer();
+                              notifier.resetTimer();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
