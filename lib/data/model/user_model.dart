@@ -11,10 +11,11 @@ class UserModel with _$UserModel {
     @Default('') String userName,
     @Default('') String email,
     @Default('') String iconUrl,
+    @Default('') String objective,
     @Default(0) int goalPomo,
     @Default(0) int currentNumOfPomo,
-    @Default(false) bool hasTimerLock,
-    @Default(false) bool hasChatLock,
+    @Default(0) int totalPomo,
+    @Default(false) bool isOnline,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -24,4 +25,17 @@ class UserModel with _$UserModel {
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) =>
       UserModel.fromJson(snapshot.data()!);
+
+  // Map<String, dynamic> toFirestore() {
+  //   return {
+  //     "uid": uid,
+  //     "name": userName,
+  //     "email": email,
+  //     'iconUrl': '',
+  //     'objective': '',
+  //     'goalPomo': 0,
+  //     'currentNumOfPomo': 0,
+  //     'isOnline': false,
+  //   };
+  // }
 }

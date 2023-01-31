@@ -24,10 +24,11 @@ mixin _$UserModel {
   String get userName => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get iconUrl => throw _privateConstructorUsedError;
+  String get objective => throw _privateConstructorUsedError;
   int get goalPomo => throw _privateConstructorUsedError;
   int get currentNumOfPomo => throw _privateConstructorUsedError;
-  bool get hasTimerLock => throw _privateConstructorUsedError;
-  bool get hasChatLock => throw _privateConstructorUsedError;
+  int get totalPomo => throw _privateConstructorUsedError;
+  bool get isOnline => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,10 +46,11 @@ abstract class $UserModelCopyWith<$Res> {
       String userName,
       String email,
       String iconUrl,
+      String objective,
       int goalPomo,
       int currentNumOfPomo,
-      bool hasTimerLock,
-      bool hasChatLock});
+      int totalPomo,
+      bool isOnline});
 }
 
 /// @nodoc
@@ -68,10 +70,11 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? userName = null,
     Object? email = null,
     Object? iconUrl = null,
+    Object? objective = null,
     Object? goalPomo = null,
     Object? currentNumOfPomo = null,
-    Object? hasTimerLock = null,
-    Object? hasChatLock = null,
+    Object? totalPomo = null,
+    Object? isOnline = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -90,6 +93,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.iconUrl
           : iconUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      objective: null == objective
+          ? _value.objective
+          : objective // ignore: cast_nullable_to_non_nullable
+              as String,
       goalPomo: null == goalPomo
           ? _value.goalPomo
           : goalPomo // ignore: cast_nullable_to_non_nullable
@@ -98,13 +105,13 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.currentNumOfPomo
           : currentNumOfPomo // ignore: cast_nullable_to_non_nullable
               as int,
-      hasTimerLock: null == hasTimerLock
-          ? _value.hasTimerLock
-          : hasTimerLock // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hasChatLock: null == hasChatLock
-          ? _value.hasChatLock
-          : hasChatLock // ignore: cast_nullable_to_non_nullable
+      totalPomo: null == totalPomo
+          ? _value.totalPomo
+          : totalPomo // ignore: cast_nullable_to_non_nullable
+              as int,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -122,10 +129,11 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       String userName,
       String email,
       String iconUrl,
+      String objective,
       int goalPomo,
       int currentNumOfPomo,
-      bool hasTimerLock,
-      bool hasChatLock});
+      int totalPomo,
+      bool isOnline});
 }
 
 /// @nodoc
@@ -143,10 +151,11 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? userName = null,
     Object? email = null,
     Object? iconUrl = null,
+    Object? objective = null,
     Object? goalPomo = null,
     Object? currentNumOfPomo = null,
-    Object? hasTimerLock = null,
-    Object? hasChatLock = null,
+    Object? totalPomo = null,
+    Object? isOnline = null,
   }) {
     return _then(_$_UserModel(
       uid: null == uid
@@ -165,6 +174,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.iconUrl
           : iconUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      objective: null == objective
+          ? _value.objective
+          : objective // ignore: cast_nullable_to_non_nullable
+              as String,
       goalPomo: null == goalPomo
           ? _value.goalPomo
           : goalPomo // ignore: cast_nullable_to_non_nullable
@@ -173,13 +186,13 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.currentNumOfPomo
           : currentNumOfPomo // ignore: cast_nullable_to_non_nullable
               as int,
-      hasTimerLock: null == hasTimerLock
-          ? _value.hasTimerLock
-          : hasTimerLock // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hasChatLock: null == hasChatLock
-          ? _value.hasChatLock
-          : hasChatLock // ignore: cast_nullable_to_non_nullable
+      totalPomo: null == totalPomo
+          ? _value.totalPomo
+          : totalPomo // ignore: cast_nullable_to_non_nullable
+              as int,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -193,10 +206,11 @@ class _$_UserModel implements _UserModel {
       this.userName = '',
       this.email = '',
       this.iconUrl = '',
+      this.objective = '',
       this.goalPomo = 0,
       this.currentNumOfPomo = 0,
-      this.hasTimerLock = false,
-      this.hasChatLock = false});
+      this.totalPomo = 0,
+      this.isOnline = false});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelFromJson(json);
@@ -215,20 +229,23 @@ class _$_UserModel implements _UserModel {
   final String iconUrl;
   @override
   @JsonKey()
+  final String objective;
+  @override
+  @JsonKey()
   final int goalPomo;
   @override
   @JsonKey()
   final int currentNumOfPomo;
   @override
   @JsonKey()
-  final bool hasTimerLock;
+  final int totalPomo;
   @override
   @JsonKey()
-  final bool hasChatLock;
+  final bool isOnline;
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, userName: $userName, email: $email, iconUrl: $iconUrl, goalPomo: $goalPomo, currentNumOfPomo: $currentNumOfPomo, hasTimerLock: $hasTimerLock, hasChatLock: $hasChatLock)';
+    return 'UserModel(uid: $uid, userName: $userName, email: $email, iconUrl: $iconUrl, objective: $objective, goalPomo: $goalPomo, currentNumOfPomo: $currentNumOfPomo, totalPomo: $totalPomo, isOnline: $isOnline)';
   }
 
   @override
@@ -241,20 +258,22 @@ class _$_UserModel implements _UserModel {
                 other.userName == userName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl) &&
+            (identical(other.objective, objective) ||
+                other.objective == objective) &&
             (identical(other.goalPomo, goalPomo) ||
                 other.goalPomo == goalPomo) &&
             (identical(other.currentNumOfPomo, currentNumOfPomo) ||
                 other.currentNumOfPomo == currentNumOfPomo) &&
-            (identical(other.hasTimerLock, hasTimerLock) ||
-                other.hasTimerLock == hasTimerLock) &&
-            (identical(other.hasChatLock, hasChatLock) ||
-                other.hasChatLock == hasChatLock));
+            (identical(other.totalPomo, totalPomo) ||
+                other.totalPomo == totalPomo) &&
+            (identical(other.isOnline, isOnline) ||
+                other.isOnline == isOnline));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uid, userName, email, iconUrl,
-      goalPomo, currentNumOfPomo, hasTimerLock, hasChatLock);
+      objective, goalPomo, currentNumOfPomo, totalPomo, isOnline);
 
   @JsonKey(ignore: true)
   @override
@@ -276,10 +295,11 @@ abstract class _UserModel implements UserModel {
       final String userName,
       final String email,
       final String iconUrl,
+      final String objective,
       final int goalPomo,
       final int currentNumOfPomo,
-      final bool hasTimerLock,
-      final bool hasChatLock}) = _$_UserModel;
+      final int totalPomo,
+      final bool isOnline}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -293,13 +313,15 @@ abstract class _UserModel implements UserModel {
   @override
   String get iconUrl;
   @override
+  String get objective;
+  @override
   int get goalPomo;
   @override
   int get currentNumOfPomo;
   @override
-  bool get hasTimerLock;
+  int get totalPomo;
   @override
-  bool get hasChatLock;
+  bool get isOnline;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

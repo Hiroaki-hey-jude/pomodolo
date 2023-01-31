@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodolo/data/sharedpreference/sharedPreferencesData.dart';
 import 'package:pomodolo/screen/auth/login_screen.dart';
+import 'package:pomodolo/screen/auth/register_screen.dart';
+import 'package:pomodolo/screen/home_screen.dart';
 import 'package:pomodolo/screen/lounge_screen.dart';
+import 'package:pomodolo/shared/constant.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-
 
 void main() async {
   //_setupTimeZone();
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         brightness: Brightness.dark,
-        primaryColor: Colors.white,
+        primaryColor: Constant.primaryColor,
       ),
       debugShowCheckedModeBanner: false,
       home: const MyAppHome(),
@@ -86,6 +88,7 @@ class _MyAppHomeState extends State<MyAppHome> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

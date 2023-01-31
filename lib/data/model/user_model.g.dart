@@ -11,10 +11,11 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       userName: json['userName'] as String? ?? '',
       email: json['email'] as String? ?? '',
       iconUrl: json['iconUrl'] as String? ?? '',
+      objective: json['objective'] as String? ?? '',
       goalPomo: json['goalPomo'] as int? ?? 0,
       currentNumOfPomo: json['currentNumOfPomo'] as int? ?? 0,
-      hasTimerLock: json['hasTimerLock'] as bool? ?? false,
-      hasChatLock: json['hasChatLock'] as bool? ?? false,
+      totalPomo: json['totalPomo'] as int? ?? 0,
+      isOnline: json['isOnline'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
@@ -23,8 +24,9 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
       'userName': instance.userName,
       'email': instance.email,
       'iconUrl': instance.iconUrl,
+      'objective': instance.objective,
       'goalPomo': instance.goalPomo,
       'currentNumOfPomo': instance.currentNumOfPomo,
-      'hasTimerLock': instance.hasTimerLock,
-      'hasChatLock': instance.hasChatLock,
+      'totalPomo': instance.totalPomo,
+      'isOnline': instance.isOnline,
     };
