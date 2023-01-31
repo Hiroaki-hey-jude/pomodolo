@@ -77,6 +77,7 @@ class ProfileStateNotifier extends StateNotifier<ProfileState> {
     if (state.imageFile != null && changedUserName != null) {
       state = state.copyWith(userModel: UserModel(userName: changedUserName!));
       print('kokokitemasuka');
+      print(state.userModel.userName);
       final ref = FirebaseStorage.instance
           .ref()
           .child('profileimages')
@@ -114,8 +115,7 @@ class ProfileStateNotifier extends StateNotifier<ProfileState> {
         'name': state.userModel.userName,
       });
       state = state.copyWith(isLoading: false);
-    }
-     else {
+    } else {
       state = state.copyWith(isLoading: false);
       return null;
     }

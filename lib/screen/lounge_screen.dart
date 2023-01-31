@@ -13,6 +13,7 @@ import 'package:pomodolo/state/lounge_state/lounge_state.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../shared/constant.dart';
 
@@ -62,9 +63,14 @@ class LoungeScreen extends StatelessWidget {
                       '利用規約',
                       style: TextStyle(fontSize: 16),
                     ),
-                    onTap: () {
+                    onTap: () async {
                       Navigator.of(context).pop();
-                      nextScreen(context, const ProfileScreen());
+                      final url = Uri.parse(
+                          'https://cut-primula-dac.notion.site/27bc1799880d49c7877e6f2f0e348296');
+                      if (!await launchUrl(url)) {
+                      } else {
+                        throw 'このURLにはアクセスできません';
+                      }
                     },
                   ),
                   ListTile(
@@ -76,9 +82,14 @@ class LoungeScreen extends StatelessWidget {
                       'プライバシーポリシー',
                       style: TextStyle(fontSize: 16),
                     ),
-                    onTap: () {
+                    onTap: () async {
                       Navigator.of(context).pop();
-                      nextScreen(context, const ProfileScreen());
+                      final url =
+                          Uri.parse('https://cut-primula-dac.notion.site/8d53f61435014ba689333c514befb566');
+                      if (!await launchUrl(url)) {
+                      } else {
+                        throw 'このURLにはアクセスできません';
+                      }
                     },
                   ),
                   ListTile(
@@ -90,9 +101,14 @@ class LoungeScreen extends StatelessWidget {
                       'お問い合わせ',
                       style: TextStyle(fontSize: 16),
                     ),
-                    onTap: () {
+                    onTap: () async {
                       Navigator.of(context).pop();
-                      nextScreen(context, const ProfileScreen());
+                      final url =
+                          Uri.parse('https://forms.gle/LoXC5gQ6j1G2Bsii6');
+                      if (!await launchUrl(url)) {
+                      } else {
+                        throw 'このURLにはアクセスできません';
+                      }
                     },
                   ),
                   ListTile(
@@ -105,8 +121,7 @@ class LoungeScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop();
-                      nextScreen(context, const ProfileScreen());
+                      popupForLogout(context);
                     },
                   ),
                   ListTile(
@@ -119,8 +134,7 @@ class LoungeScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     ),
                     onTap: () {
-                      Navigator.of(context).pop();
-                      nextScreen(context, const ProfileScreen());
+                      popupForDelteAccount(context);
                     },
                   ),
                 ],
@@ -487,16 +501,19 @@ class LoungeScreen extends StatelessWidget {
                                     child: CircularProgressIndicator(),
                                   );
                                 }
-                                if (snapshot.data!.docs[0]['isOnline'] ==
-                                    true) {
-                                  return myselfTile(
-                                    snapshot.data!.docs[0]['name'],
-                                    snapshot.data!.docs[0]['profilePic'],
-                                    snapshot.data!.docs[0]['goalPomo'],
-                                    snapshot.data!.docs[0]['objective'],
-                                    snapshot.data!.docs[0]['uid'],
-                                    snapshot.data!.docs[0]['currentNumOfPomo'],
-                                  );
+                                if (snapshot.data.docs[0]['isOnline'] != null) {
+                                  if (snapshot.data!.docs[0]['isOnline'] ==
+                                      true) {
+                                    return myselfTile(
+                                      snapshot.data!.docs[0]['name'],
+                                      snapshot.data!.docs[0]['profilePic'],
+                                      snapshot.data!.docs[0]['goalPomo'],
+                                      snapshot.data!.docs[0]['objective'],
+                                      snapshot.data!.docs[0]['uid'],
+                                      snapshot.data!.docs[0]
+                                          ['currentNumOfPomo'],
+                                    );
+                                  }
                                 }
                                 return Container();
                               },
