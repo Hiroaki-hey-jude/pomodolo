@@ -8,8 +8,6 @@ import 'package:pomodolo/screen/auth/register_screen.dart';
 import 'package:pomodolo/screen/home_screen.dart';
 import 'package:pomodolo/screen/lounge_screen.dart';
 import 'package:pomodolo/shared/constant.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 void main() async {
   //_setupTimeZone();
@@ -17,13 +15,6 @@ void main() async {
   await Firebase.initializeApp();
   runApp(const ProviderScope(child: MyApp()));
 }
-
-// タイムゾーンを設定する
-// Future<void> _setupTimeZone() async {
-//   tz.initializeTimeZones();
-//   var tokyo = tz.getLocation('Asia/Tokyo');
-//   tz.setLocalLocation(tokyo);
-// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -49,26 +40,26 @@ class MyAppHome extends StatefulWidget {
 }
 
 class _MyAppHomeState extends State<MyAppHome> {
-  // String _authStatus = 'Unknown';
-  // Future<void> initPlugin() async {
-  //   final TrackingStatus status =
-  //       await AppTrackingTransparency.trackingAuthorizationStatus;
-  //   setState(() => _authStatus = '$status');
-  //   // If the system can show an authorization request dialog
-  //   if (status == TrackingStatus.notDetermined) {
-  //     // Show a custom explainer dialog before the system dialog
-  //     await showCustomTrackingDialog(context);
-  //     // Wait for dialog popping animation
-  //     await Future.delayed(const Duration(milliseconds: 200));
-  //     // Request system's tracking authorization dialog
-  //     final TrackingStatus status =
-  //         await AppTrackingTransparency.requestTrackingAuthorization();
-  //     setState(() => _authStatus = '$status');
-  //   }
+  String _authStatus = 'Unknown';
+  Future<void> initPlugin() async {
+    final TrackingStatus status =
+        await AppTrackingTransparency.trackingAuthorizationStatus;
+    setState(() => _authStatus = '$status');
+    // If the system can show an authorization request dialog
+    if (status == TrackingStatus.notDetermined) {
+      // Show a custom explainer dialog before the system dialog
+      await showCustomTrackingDialog(context);
+      // Wait for dialog popping animation
+      await Future.delayed(const Duration(milliseconds: 200));
+      // Request system's tracking authorization dialog
+      final TrackingStatus status =
+          await AppTrackingTransparency.requestTrackingAuthorization();
+      setState(() => _authStatus = '$status');
+    }
 
-  //   final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
-  //   print("UUID: $uuid");
-  // }
+    final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+    print("UUID: $uuid");
+  }
 
   bool _isSignedIn = false;
   @override
@@ -96,23 +87,23 @@ class _MyAppHomeState extends State<MyAppHome> {
     );
   }
 
-  // Future<void> showCustomTrackingDialog(BuildContext context) async =>
-  //     await showDialog<void>(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //         title: const Text('ユーザー様へ'),
-  //         content: const Text(
-  //           'このアプリでは取得したトラッキングデータを、 '
-  //           'お客様に合わせたご提案等のサービスの'
-  //           '改善や向上をを目的として分析、使用させて'
-  //           'いただきます。',
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () => Navigator.pop(context),
-  //             child: const Text('続ける'),
-  //           ),
-  //         ],
-  //       ),
-  //     );
+  Future<void> showCustomTrackingDialog(BuildContext context) async =>
+      await showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('ユーザー様へ'),
+          content: const Text(
+            'このアプリでは取得したトラッキングデータを、 '
+            'お客様に合わせたご提案等のサービスの'
+            '改善や向上をを目的として分析、使用させて'
+            'いただきます。',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('続ける'),
+            ),
+          ],
+        ),
+      );
 }
