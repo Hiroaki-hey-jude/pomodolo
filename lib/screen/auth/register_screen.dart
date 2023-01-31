@@ -30,10 +30,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
         final notifier = ref.watch(registerStateProvider.notifier);
         final state = ref.watch(registerStateProvider);
         return state.isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor,
-                ),
+            ? Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                      image: DecorationImage(
+                        image: AssetImage('assets/background.JPG'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               )
             : GestureDetector(
                 onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -54,8 +67,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         key: formKey,
                         child: Container(
                           alignment: Alignment.center,
-                          padding:
-                              EdgeInsets.fromLTRB(30, deviceHeight / 6.8, 30, 0),
+                          padding: EdgeInsets.fromLTRB(
+                              30, deviceHeight / 6.8, 30, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -113,8 +126,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 }),
                                           const TextSpan(
                                               text: 'と',
-                                              style:
-                                                  TextStyle(color: Colors.black)),
+                                              style: TextStyle(
+                                                  color: Colors.black)),
                                           TextSpan(
                                               text: 'プライバシーポリシー',
                                               style: const TextStyle(
@@ -133,7 +146,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 }),
                                           const TextSpan(
                                             text: 'に\n同意して始める',
-                                            style: TextStyle(color: Colors.black),
+                                            style:
+                                                TextStyle(color: Colors.black),
                                           ),
                                         ],
                                       ),
@@ -200,14 +214,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               backgroundColor: Colors.white,
                                               elevation: 0,
                                               side: BorderSide(
-                                                  color: Colors.black, width: 1),
+                                                  color: Colors.black,
+                                                  width: 1),
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(30))),
+                                                      BorderRadius.circular(
+                                                          30))),
                                           child: const Text(
                                             "アカウント作成",
                                             style: TextStyle(
-                                                color: Colors.black, fontSize: 16),
+                                                color: Colors.black,
+                                                fontSize: 16),
                                           ),
                                           onPressed: () {
                                             notifier.register(
