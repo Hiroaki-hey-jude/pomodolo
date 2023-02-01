@@ -16,7 +16,7 @@ class FireStore {
       email: email,
       iconUrl: '',
       objective: '',
-      goalPomo: 3,
+      goalPomo: 0,
       currentNumOfPomo: 0,
       isOnline: false,
       totalPomo: 0,

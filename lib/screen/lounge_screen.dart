@@ -3,9 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pomodolo/data/firebase/firestore.dart';
-import 'package:pomodolo/data/model/pomodolo_model.dart';
 import 'package:pomodolo/screen/profile_screen.dart';
 import 'package:pomodolo/screen/widgets/widgets.dart';
 import 'package:pomodolo/shared/status.dart';
@@ -26,6 +23,13 @@ class LoungeScreen extends StatelessWidget {
         TextEditingController();
     final TextEditingController goaltaskEditingController =
         TextEditingController();
+    double deviceHeight = MediaQuery.of(context).size.height;
+    double onlineContainer = 0;
+    if (deviceHeight < 850) {
+      onlineContainer = 300;
+    } else {
+      onlineContainer = 600;
+    }
     return Scaffold(
       drawer: Drawer(
         child: Stack(
@@ -56,7 +60,7 @@ class LoungeScreen extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.notes_sharp,
                     ),
                     title: const Text(
@@ -84,8 +88,8 @@ class LoungeScreen extends StatelessWidget {
                     ),
                     onTap: () async {
                       Navigator.of(context).pop();
-                      final url =
-                          Uri.parse('https://cut-primula-dac.notion.site/8d53f61435014ba689333c514befb566');
+                      final url = Uri.parse(
+                          'https://cut-primula-dac.notion.site/8d53f61435014ba689333c514befb566');
                       if (!await launchUrl(url)) {
                       } else {
                         throw 'このURLにはアクセスできません';
@@ -425,12 +429,8 @@ class LoungeScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              print('koko');
-                              if (state.pomodoloModel.status ==
-                                  Status.stopped) {
-                                print('koko2');
-                                notifier.resetTimer();
-                              }
+                              notifier.stopTimer();
+                              notifier.resetTimer();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -452,7 +452,7 @@ class LoungeScreen extends StatelessWidget {
                     ),
                     child: Container(
                       width: double.infinity,
-                      height: 300,
+                      height: onlineContainer,
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 1,
@@ -566,7 +566,7 @@ class LoungeScreen extends StatelessWidget {
 
   Widget myselfTile(String userName, String profilePic, int goalPomo,
       String objective, String uid, int currentNumOfPomo) {
-    if (currentNumOfPomo == goalPomo) {
+    if (currentNumOfPomo == goalPomo && goalPomo != 0) {
       return Consumer(builder: (context, ref, child) {
         final notifier = ref.watch(loungeStateProvider.notifier);
         WidgetsBinding.instance.addPostFrameCallback((_) {

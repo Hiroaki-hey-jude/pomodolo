@@ -28,14 +28,23 @@ class _LogInScreenState extends State<LogInScreen> {
         final notifier = ref.watch(loginStateProvider.notifier);
         final state = ref.watch(loginStateProvider);
         return state.isLoading
-            ? Container(
-                color: Theme.of(context).primaryColor,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.white,
-                    color: Theme.of(context).primaryColor,
+            ? Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                      image: DecorationImage(
+                        image: AssetImage('assets/background.JPG'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ),
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               )
             : GestureDetector(
                 onTap: () => FocusScope.of(context).requestFocus(
@@ -59,7 +68,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.fromLTRB(
-                                30, deviceHeight / 5.8, 30, 0),
+                                30, deviceHeight / 4.8, 30, 0),
                             child: Column(
                               children: [
                                 const Text(
