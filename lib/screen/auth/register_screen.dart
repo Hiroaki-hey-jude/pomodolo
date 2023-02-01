@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.fromLTRB(
-                              30, deviceHeight / 6.8, 30, 0),
+                              30, deviceHeight / 5.8, 30, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -213,7 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           style: ElevatedButton.styleFrom(
                                               backgroundColor: Colors.white,
                                               elevation: 0,
-                                              side: BorderSide(
+                                              side: const BorderSide(
                                                   color: Colors.black,
                                                   width: 1),
                                               shape: RoundedRectangleBorder(

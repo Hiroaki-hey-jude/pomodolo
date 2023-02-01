@@ -68,7 +68,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.fromLTRB(
-                                30, deviceHeight / 5.8, 30, 0),
+                                30, deviceHeight / 4.8, 30, 0),
                             child: Column(
                               children: [
                                 const Text(
