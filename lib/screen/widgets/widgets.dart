@@ -54,7 +54,7 @@ Widget profilePicturesWidget(String id) {
           String originalImgURL = snapshot.data!.get('profilePic') as String !=
                   ''
               ? snapshot.data!.get('profilePic') as String
-              : 'https://images.unsplash.com/flagged/photo-1572392640988-ba48d1a74457?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80';
+              : 'https://img.freepik.com/free-vector/white-minimal-background_1393-354.jpg?w=2000&t=st=1675338343~exp=1675338943~hmac=fcdf46b2d30a1f7eda058fa2df73a244c20dec89cd99e8c28e4d1de05bdb3788';
           print(originalImgURL);
           return CircleAvatar(
             radius: 30,

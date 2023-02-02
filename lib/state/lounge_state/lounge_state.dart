@@ -171,7 +171,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         );
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 1),
+            const Duration(minutes: 5),
           ),
         );
       } else {
@@ -181,7 +181,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         );
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 1),
+            const Duration(minutes: 25),
           ),
         );
       }
@@ -195,7 +195,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         state = state.copyWith(
           isResting: true,
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 1),
+            const Duration(minutes: 5),
           ),
         );
         print(state.intervalType);
@@ -208,7 +208,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         state = state.copyWith(isResting: false);
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 1),
+            const Duration(minutes: 25),
           ),
         );
       }
@@ -233,7 +233,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
       );
     }
     state = state.copyWith(
-      pomodoloModel: const PomodoloModel(status: Status.stopped),
+      pomodoloModel: const PomodoloModel(status: Status.initial),
     );
   }
 
