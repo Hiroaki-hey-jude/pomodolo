@@ -36,7 +36,7 @@ class RegisterStateNotifier extends StateNotifier<RegisterState> {
 
   void getName(String userName) {
     print('hihi');
-    state = state.copyWith(userModel: UserModel(userName: userName));
+    state = state.copyWith(userModel: UserModel(name: userName));
   }
 
   void getEmail(String email) {
@@ -57,31 +57,30 @@ class RegisterStateNotifier extends StateNotifier<RegisterState> {
   ) async {
     // if (formKey != null) {
     if (formKey!.currentState!.validate()) {
-    state = state.copyWith(isLoading: true);
-    state =
-        state.copyWith(userModel: UserModel(userName: name, email: email));
-    final EmailSignResults emailSignResults =
-        await Auth().registerUserWithEmailandPassword(
-      name,
-      email,
-      password,
-    );
-    String message = '';
-    if (emailSignResults == EmailSignResults.SignUpCompleted) {
-      print('ifの中');
-      await SharedPreferencesData().saveUserLoggedInStatus(true);
-      await SharedPreferencesData().saveUserEmailSF(email);
-      await SharedPreferencesData().saveUserNameSF(name);
-      nextScreenReplacement(context, const LoungeScreen());
-    } else if (emailSignResults == EmailSignResults.SignUpNotCompleted) {
-      message = 'Sign up not completed, try again';
-    } else {
-      message = 'Email alaready present';
-    }
-    if (message != '')
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(message)));
-    state = state.copyWith(isLoading: false);
+      state = state.copyWith(isLoading: true);
+      state = state.copyWith(userModel: UserModel(name: name, email: email));
+      final EmailSignResults emailSignResults =
+          await Auth().registerUserWithEmailandPassword(
+        name,
+        email,
+        password,
+      );
+      String message = '';
+      if (emailSignResults == EmailSignResults.SignUpCompleted) {
+        print('ifの中');
+        await SharedPreferencesData().saveUserLoggedInStatus(true);
+        await SharedPreferencesData().saveUserEmailSF(email);
+        await SharedPreferencesData().saveUserNameSF(name);
+        nextScreenReplacement(context, const LoungeScreen());
+      } else if (emailSignResults == EmailSignResults.SignUpNotCompleted) {
+        message = 'Sign up not completed, try again';
+      } else {
+        message = 'Email alaready present';
+      }
+      if (message != '')
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(message)));
+      state = state.copyWith(isLoading: false);
     } else {
       print('not Validated');
     }

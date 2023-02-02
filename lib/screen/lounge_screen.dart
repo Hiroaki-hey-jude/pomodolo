@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:pomodolo/screen/chat_screen.dart';
 import 'package:pomodolo/screen/profile_screen.dart';
 import 'package:pomodolo/screen/widgets/widgets.dart';
+import 'package:pomodolo/shared/interval_type_enum.dart';
 import 'package:pomodolo/shared/status.dart';
 import 'package:pomodolo/state/lounge_state/lounge_state.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../shared/constant.dart';
@@ -19,6 +20,10 @@ class LoungeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQueryData = MediaQuery.of(context);
+    final screenHeight = mediaQueryData.size.height;
+    final blockSizeVertical = screenHeight / 100;
+
     final TextEditingController numberOfPomoEditingController =
         TextEditingController();
     final TextEditingController goaltaskEditingController =
@@ -30,6 +35,7 @@ class LoungeScreen extends StatelessWidget {
     } else {
       onlineContainer = 600;
     }
+
     return Scaffold(
       drawer: Drawer(
         child: Stack(
@@ -49,7 +55,7 @@ class LoungeScreen extends StatelessWidget {
               child: ListView(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.person),
+                    leading: const Icon(Icons.person),
                     title: const Text(
                       'プロフィール',
                       style: TextStyle(fontSize: 16),
@@ -151,11 +157,38 @@ class LoungeScreen extends StatelessWidget {
         elevation: 0,
         title: const Text('Lounge'),
         backgroundColor: Colors.transparent,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Icon(Icons.chat_bubble),
-          ),
+        actions: [
+          Consumer(builder: (context, ref, child) {
+            final state = ref.watch(loungeStateProvider);
+            return state.intervalType == IntervalType.work
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      icon: const Icon(Icons.chat_bubble),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.white,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25),
+                            ),
+                          ),
+                          builder: (BuildContext context) {
+                            return SizedBox(
+                              // 90%の高さで表示させる
+                              height: blockSizeVertical * 95,
+                              child: const ChatScreen(),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  );
+          }),
         ],
       ),
       extendBodyBehindAppBar: true,
@@ -368,8 +401,6 @@ class LoungeScreen extends StatelessWidget {
                                                           ],
                                                         ),
                                                         onPressed: () {
-                                                          print(
-                                                              'kokohaikiteru');
                                                           notifier.initialStart(
                                                               goaltaskEditingController
                                                                   .text,

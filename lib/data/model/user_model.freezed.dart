@@ -21,9 +21,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserModel {
   String get uid => throw _privateConstructorUsedError;
-  String get userName => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get iconUrl => throw _privateConstructorUsedError;
+  String? get profilePic => throw _privateConstructorUsedError;
   String get objective => throw _privateConstructorUsedError;
   int get goalPomo => throw _privateConstructorUsedError;
   int get currentNumOfPomo => throw _privateConstructorUsedError;
@@ -43,9 +43,9 @@ abstract class $UserModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String uid,
-      String userName,
+      String name,
       String email,
-      String iconUrl,
+      String? profilePic,
       String objective,
       int goalPomo,
       int currentNumOfPomo,
@@ -67,9 +67,9 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @override
   $Res call({
     Object? uid = null,
-    Object? userName = null,
+    Object? name = null,
     Object? email = null,
-    Object? iconUrl = null,
+    Object? profilePic = freezed,
     Object? objective = null,
     Object? goalPomo = null,
     Object? currentNumOfPomo = null,
@@ -81,18 +81,18 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      userName: null == userName
-          ? _value.userName
-          : userName // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      iconUrl: null == iconUrl
-          ? _value.iconUrl
-          : iconUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+      profilePic: freezed == profilePic
+          ? _value.profilePic
+          : profilePic // ignore: cast_nullable_to_non_nullable
+              as String?,
       objective: null == objective
           ? _value.objective
           : objective // ignore: cast_nullable_to_non_nullable
@@ -126,9 +126,9 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String uid,
-      String userName,
+      String name,
       String email,
-      String iconUrl,
+      String? profilePic,
       String objective,
       int goalPomo,
       int currentNumOfPomo,
@@ -148,9 +148,9 @@ class __$$_UserModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
-    Object? userName = null,
+    Object? name = null,
     Object? email = null,
-    Object? iconUrl = null,
+    Object? profilePic = freezed,
     Object? objective = null,
     Object? goalPomo = null,
     Object? currentNumOfPomo = null,
@@ -162,18 +162,18 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      userName: null == userName
-          ? _value.userName
-          : userName // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      iconUrl: null == iconUrl
-          ? _value.iconUrl
-          : iconUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+      profilePic: freezed == profilePic
+          ? _value.profilePic
+          : profilePic // ignore: cast_nullable_to_non_nullable
+              as String?,
       objective: null == objective
           ? _value.objective
           : objective // ignore: cast_nullable_to_non_nullable
@@ -203,9 +203,9 @@ class __$$_UserModelCopyWithImpl<$Res>
 class _$_UserModel implements _UserModel {
   const _$_UserModel(
       {this.uid = '',
-      this.userName = '',
+      this.name = '',
       this.email = '',
-      this.iconUrl = '',
+      this.profilePic = null,
       this.objective = '',
       this.goalPomo = 0,
       this.currentNumOfPomo = 0,
@@ -220,13 +220,13 @@ class _$_UserModel implements _UserModel {
   final String uid;
   @override
   @JsonKey()
-  final String userName;
+  final String name;
   @override
   @JsonKey()
   final String email;
   @override
   @JsonKey()
-  final String iconUrl;
+  final String? profilePic;
   @override
   @JsonKey()
   final String objective;
@@ -245,7 +245,7 @@ class _$_UserModel implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, userName: $userName, email: $email, iconUrl: $iconUrl, objective: $objective, goalPomo: $goalPomo, currentNumOfPomo: $currentNumOfPomo, totalPomo: $totalPomo, isOnline: $isOnline)';
+    return 'UserModel(uid: $uid, name: $name, email: $email, profilePic: $profilePic, objective: $objective, goalPomo: $goalPomo, currentNumOfPomo: $currentNumOfPomo, totalPomo: $totalPomo, isOnline: $isOnline)';
   }
 
   @override
@@ -254,10 +254,10 @@ class _$_UserModel implements _UserModel {
         (other.runtimeType == runtimeType &&
             other is _$_UserModel &&
             (identical(other.uid, uid) || other.uid == uid) &&
-            (identical(other.userName, userName) ||
-                other.userName == userName) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl) &&
+            (identical(other.profilePic, profilePic) ||
+                other.profilePic == profilePic) &&
             (identical(other.objective, objective) ||
                 other.objective == objective) &&
             (identical(other.goalPomo, goalPomo) ||
@@ -272,7 +272,7 @@ class _$_UserModel implements _UserModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, userName, email, iconUrl,
+  int get hashCode => Object.hash(runtimeType, uid, name, email, profilePic,
       objective, goalPomo, currentNumOfPomo, totalPomo, isOnline);
 
   @JsonKey(ignore: true)
@@ -292,9 +292,9 @@ class _$_UserModel implements _UserModel {
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
       {final String uid,
-      final String userName,
+      final String name,
       final String email,
-      final String iconUrl,
+      final String? profilePic,
       final String objective,
       final int goalPomo,
       final int currentNumOfPomo,
@@ -307,11 +307,11 @@ abstract class _UserModel implements UserModel {
   @override
   String get uid;
   @override
-  String get userName;
+  String get name;
   @override
   String get email;
   @override
-  String get iconUrl;
+  String? get profilePic;
   @override
   String get objective;
   @override

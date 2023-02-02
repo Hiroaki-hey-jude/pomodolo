@@ -8,9 +8,9 @@ part 'user_model.g.dart';
 class UserModel with _$UserModel {
   const factory UserModel({
     @Default('') String uid,
-    @Default('') String userName,
+    @Default('') String name,
     @Default('') String email,
-    @Default('') String iconUrl,
+    @Default(null) String? profilePic,
     @Default('') String objective,
     @Default(0) int goalPomo,
     @Default(0) int currentNumOfPomo,
@@ -25,17 +25,4 @@ class UserModel with _$UserModel {
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) =>
       UserModel.fromJson(snapshot.data()!);
-
-  // Map<String, dynamic> toFirestore() {
-  //   return {
-  //     "uid": uid,
-  //     "name": userName,
-  //     "email": email,
-  //     'iconUrl': '',
-  //     'objective': '',
-  //     'goalPomo': 0,
-  //     'currentNumOfPomo': 0,
-  //     'isOnline': false,
-  //   };
-  // }
 }

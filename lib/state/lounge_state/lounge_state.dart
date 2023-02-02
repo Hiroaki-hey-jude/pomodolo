@@ -24,14 +24,16 @@ final loungeStateProvider =
 
 @freezed
 class LoungeState with _$LoungeState {
-  const factory LoungeState(
-      {@Default(false) bool isLoading,
-      Timer? timer,
-      required DateTime time,
-      @Default(false) bool isResting,
-      required PomodoloModel pomodoloModel,
-      int? currentPomo,
-      String? userName}) = _LoungeState;
+  const factory LoungeState({
+    @Default(false) bool isLoading,
+    @Default(null) Timer? timer,
+    required DateTime time,
+    @Default(false) bool isResting,
+    @Default(IntervalType.rest) IntervalType intervalType,
+    required PomodoloModel pomodoloModel,
+    @Default(null) int? currentPomo,
+    @Default(null) String? userName,
+  }) = _LoungeState;
 }
 
 class LoungeStateNotifier extends StateNotifier<LoungeState>
@@ -41,7 +43,6 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
   bool? _isTimerPaused; // バックグラウンドに遷移した際にタイマーがもともと起動中で、停止したかどうか
   late DateTime? _pausedTime; // バックグラウンドに遷移した時間
   late int? _notificationId; // 通知ID
-  IntervalType intervalType = IntervalType.work;
   LoungeStateNotifier()
       : super(LoungeState(
           time: DateTime.utc(0, 0, 0).add(const Duration(minutes: 25)),
@@ -103,7 +104,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
       state = state.copyWith(
         pomodoloModel: const PomodoloModel(status: Status.stopped),
       );
-      if (intervalType == IntervalType.rest) {
+      if (state.intervalType == IntervalType.rest) {
         state = state.copyWith(
             time: DateTime.utc(0, 0, 0).add(
           const Duration(minutes: 5),
@@ -138,11 +139,12 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
 
   // タイマーを開始する
   void startTimer() {
+    print('adsfadgfadgagmsdi!!!!');
     if ((state.pomodoloModel.status == Status.initial &&
-            intervalType == IntervalType.work) ||
+            state.intervalType == IntervalType.work) ||
         state.pomodoloModel.status == Status.stopped) {
       print(state.pomodoloModel.status);
-      print(intervalType);
+      print(state.intervalType);
       state = state.copyWith(
           timer: Timer.periodic(const Duration(seconds: 1), (Timer timer) {
         state =
@@ -159,20 +161,24 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
 
   void workOrRest(bool value) {
     print(state.pomodoloModel.status);
-    print(intervalType);
+    print(state.intervalType);
     if (state.pomodoloModel.status == Status.initial) {
       print('ifの中');
       if (value == true) {
-        intervalType = IntervalType.rest;
-        state = state.copyWith(isResting: true);
+        state = state.copyWith(
+          isResting: true,
+          intervalType: IntervalType.rest,
+        );
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
             const Duration(minutes: 1),
           ),
         );
       } else {
-        intervalType = IntervalType.work;
-        state = state.copyWith(isResting: false);
+        state = state.copyWith(
+          isResting: false,
+          intervalType: IntervalType.work,
+        );
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
             const Duration(minutes: 1),
@@ -181,21 +187,21 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
       }
     } else {
       if (value == true) {
-        intervalType = IntervalType.rest;
         state = state.copyWith(
+          intervalType: IntervalType.rest,
           pomodoloModel: const PomodoloModel(status: Status.stopped),
         );
         //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
-        state = state.copyWith(isResting: true);
         state = state.copyWith(
+          isResting: true,
           time: DateTime.utc(0, 0, 0).add(
             const Duration(minutes: 1),
           ),
         );
-        print(intervalType);
+        print(state.intervalType);
       } else {
-        intervalType = IntervalType.work;
         state = state.copyWith(
+          intervalType: IntervalType.work,
           pomodoloModel: const PomodoloModel(status: Status.stopped),
         );
         //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
@@ -213,7 +219,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
   }
 
   void resetTimer() {
-    if (intervalType == IntervalType.work) {
+    if (state.intervalType == IntervalType.work) {
       state = state.copyWith(
         time: DateTime.utc(0, 0, 0).add(
           const Duration(minutes: 25),
@@ -323,6 +329,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
   }
 
   initialStart(String objectve, int goalPomo, String uid) {
+    state = state.copyWith(intervalType: IntervalType.work);
     FireStore().startTimer(goalPomo, objectve, uid);
   }
 

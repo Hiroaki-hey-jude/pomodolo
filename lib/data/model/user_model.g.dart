@@ -8,9 +8,9 @@ part of 'user_model.dart';
 
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       uid: json['uid'] as String? ?? '',
-      userName: json['userName'] as String? ?? '',
+      name: json['name'] as String? ?? '',
       email: json['email'] as String? ?? '',
-      iconUrl: json['iconUrl'] as String? ?? '',
+      profilePic: json['profilePic'] as String? ?? null,
       objective: json['objective'] as String? ?? '',
       goalPomo: json['goalPomo'] as int? ?? 0,
       currentNumOfPomo: json['currentNumOfPomo'] as int? ?? 0,
@@ -21,9 +21,9 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
     <String, dynamic>{
       'uid': instance.uid,
-      'userName': instance.userName,
+      'name': instance.name,
       'email': instance.email,
-      'iconUrl': instance.iconUrl,
+      'profilePic': instance.profilePic,
       'objective': instance.objective,
       'goalPomo': instance.goalPomo,
       'currentNumOfPomo': instance.currentNumOfPomo,

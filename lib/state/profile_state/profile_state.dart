@@ -45,7 +45,7 @@ class ProfileStateNotifier extends StateNotifier<ProfileState> {
       state = state.copyWith(userModel: UserModel(email: value!));
     });
     await SharedPreferencesData().getUserNameFromSF().then((value) {
-      state = state.copyWith(userModel: UserModel(userName: value!));
+      state = state.copyWith(userModel: UserModel(name: value!));
     });
   }
 
@@ -75,13 +75,13 @@ class ProfileStateNotifier extends StateNotifier<ProfileState> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     if (state.imageFile != null && changedUserName != null) {
-      state = state.copyWith(userModel: UserModel(userName: changedUserName!));
+      state = state.copyWith(userModel: UserModel(name: changedUserName!));
       print('kokokitemasuka');
-      print(state.userModel.userName);
+      print(state.userModel.name);
       final ref = FirebaseStorage.instance
           .ref()
           .child('profileimages')
-          .child(state.userModel.userName + '.jpg');
+          .child(state.userModel.name + '.jpg');
       await ref.putFile(state.imageFile!);
       imgURL = await ref.getDownloadURL();
       await FirebaseFirestore.instance
@@ -89,14 +89,14 @@ class ProfileStateNotifier extends StateNotifier<ProfileState> {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update({
         'profilePic': imgURL,
-        'name': state.userModel.userName,
+        'name': state.userModel.name,
       });
       state = state.copyWith(isLoading: false);
     } else if (state.imageFile != null) {
       final ref = FirebaseStorage.instance
           .ref()
           .child('profileimages')
-          .child(state.userModel.userName + '.jpg');
+          .child(state.userModel.name + '.jpg');
       await ref.putFile(state.imageFile!);
       imgURL = await ref.getDownloadURL();
       await FirebaseFirestore.instance
@@ -107,12 +107,12 @@ class ProfileStateNotifier extends StateNotifier<ProfileState> {
       });
       state = state.copyWith(isLoading: false);
     } else if (changedUserName != null) {
-      state = state.copyWith(userModel: UserModel(userName: changedUserName!));
+      state = state.copyWith(userModel: UserModel(name: changedUserName!));
       await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update({
-        'name': state.userModel.userName,
+        'name': state.userModel.name,
       });
       state = state.copyWith(isLoading: false);
     } else {
