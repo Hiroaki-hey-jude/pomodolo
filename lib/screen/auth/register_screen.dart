@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: Column(
                             children: [
                               const Text(
-                                'POMODORO\nROOM',
+                                'POMODORO\nCHAT',
                                 style: TextStyle(
                                   color: Constant.whiteColor,
                                   fontSize: 35,

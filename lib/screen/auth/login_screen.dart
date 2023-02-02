@@ -72,7 +72,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             child: Column(
                               children: [
                                 const Text(
-                                  'POMODORO\nROOM',
+                                  'POMODORO\nCHAT',
                                   style: TextStyle(
                                     color: Constant.whiteColor,
                                     fontSize: 35,

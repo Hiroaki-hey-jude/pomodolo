@@ -227,7 +227,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
       );
     }
     state = state.copyWith(
-      pomodoloModel: const PomodoloModel(status: Status.stopped),
+      pomodoloModel: const PomodoloModel(status: Status.initial),
     );
   }
 
