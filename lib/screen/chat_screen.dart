@@ -5,6 +5,9 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodolo/data/model/chat_message_model.dart';
 import 'package:pomodolo/state/chat_state/chat_state.dart';
+import 'package:pomodolo/state/login_state/login_state.dart';
+import 'package:pomodolo/state/lounge_state/lounge_state.dart';
+import 'package:intl/intl.dart';
 
 class ChatScreen extends ConsumerWidget {
   const ChatScreen({super.key});
@@ -13,6 +16,7 @@ class ChatScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(chatStateProvider);
     final notifier = ref.watch(chatStateProvider.notifier);
+    final loungeState = ref.watch(loungeStateProvider);
 
     return state.isLoading
         ? const Center(
@@ -123,6 +127,17 @@ class ChatScreen extends ConsumerWidget {
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 17,
+                          ),
+                        ),
+                        const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: Text(
+                            DateFormat.ms().format(loungeState.time),
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],
