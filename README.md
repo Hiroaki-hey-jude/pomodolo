@@ -1,17 +1,5 @@
-# pomodolo
+# Pomodoro Chat-ポモチャ
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# pomodolo
+![6 5 002](https://user-images.githubusercontent.com/76618285/216323805-6b63c995-e9d1-42e5-9d45-9a07257a2ae5.png)
+![6 5 002](https://user-images.githubusercontent.com/76618285/216324063-df4b126d-7aa8-42fe-91d7-e7dc8deb0574.png)
+![6 5 003](https://user-images.githubusercontent.com/76618285/216324088-97d0073e-3242-49fd-a22c-a623ddbf88de.png)
