@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pomodolo/screen/block_screen.dart';
+import 'package:pomodolo/screen/widgets/widgets.dart';
 import 'package:pomodolo/state/profile_state/profile_state.dart';
 
 import '../data/sharedpreference/sharedPreferencesData.dart';
@@ -221,6 +223,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                     Text(
                                         '${snapshot.data!.get('totalPomo') * 25}分')
                                   ],
+                                ),
+                                const Divider(height: 20),
+                                GestureDetector(
+                                  onTap: () {
+                                    nextScreen(context, const BlockScreen());
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      Text(
+                                        'ブロックした人',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      Icon(Icons.navigate_next)
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

@@ -661,7 +661,7 @@ class LoungeScreen extends StatelessWidget {
                             )
                           ]),
                       onSelected: (newValue) {
-                        popupReportAndBlock(context, uid, newValue);
+                        popupReportAndBlock(context, uid, newValue, userName);
                       },
                       child: const Icon(Icons.more_vert),
                     )

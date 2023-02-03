@@ -194,7 +194,7 @@ popupForDelteAccount(context) {
   );
 }
 
-popupReportAndBlock(context, String uid, String kind) {
+popupReportAndBlock(context, String uid, String kind, String name) {
   print(kind);
   if (kind == '報告') {
     showDialog(
@@ -269,7 +269,7 @@ popupReportAndBlock(context, String uid, String kind) {
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  FireStore().block(uid);
+                  FireStore().block(uid, name);
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('このユーザーをブロックしました')));
                 },
