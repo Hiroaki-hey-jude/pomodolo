@@ -30,11 +30,12 @@ class LoungeScreen extends StatelessWidget {
         TextEditingController();
     double deviceHeight = MediaQuery.of(context).size.height;
     double onlineContainer = 0;
-    if (deviceHeight < 850) {
-      onlineContainer = 300;
+    if (deviceHeight < 900) {
+      onlineContainer = 350;
     } else {
       onlineContainer = 600;
     }
+    List<dynamic> blocks = [];
 
     return Scaffold(
       drawer: Drawer(
@@ -569,14 +570,15 @@ class LoungeScreen extends StatelessWidget {
                                   itemCount: snapshot.data.docs.length,
                                   itemBuilder: ((context, index) {
                                     return userTile(
-                                      snapshot.data!.docs[index]['name'],
-                                      snapshot.data!.docs[index]['profilePic'],
-                                      snapshot.data!.docs[index]['goalPomo'],
-                                      snapshot.data!.docs[index]['objective'],
-                                      snapshot.data!.docs[index]['uid'],
-                                      snapshot.data!.docs[index]
-                                          ['currentNumOfPomo'],
-                                    );
+                                        snapshot.data!.docs[index]['name'],
+                                        snapshot.data!.docs[index]
+                                            ['profilePic'],
+                                        snapshot.data!.docs[index]['goalPomo'],
+                                        snapshot.data!.docs[index]['objective'],
+                                        snapshot.data!.docs[index]['uid'],
+                                        snapshot.data!.docs[index]
+                                            ['currentNumOfPomo'],
+                                        context);
                                   }),
                                 ),
                               );
@@ -643,8 +645,15 @@ class LoungeScreen extends StatelessWidget {
     );
   }
 
-  Widget userTile(String userName, String profilePic, int goalPomo,
-      String objective, String uid, int currentNumOfPomo) {
+  Widget userTile(
+    String userName,
+    String profilePic,
+    int goalPomo,
+    String objective,
+    String uid,
+    int currentNumOfPomo,
+    BuildContext context,
+  ) {
     return uid != FirebaseAuth.instance.currentUser!.uid
         ? Container(
             width: double.infinity,
@@ -666,7 +675,30 @@ class LoungeScreen extends StatelessWidget {
                     color: Colors.white70,
                   ),
                 ),
-                trailing: goalPomoWidget(uid),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    goalPomoWidget(uid),
+                    PopupMenuButton(
+                      child: Icon(Icons.more_vert),
+                      constraints: const BoxConstraints(),
+                      padding: EdgeInsets.zero,
+                      itemBuilder: ((context) => [
+                            const PopupMenuItem(
+                              value: '報告',
+                              child: Text('報告'),
+                            ),
+                            const PopupMenuItem(
+                              value: 'ブロック',
+                              child: Text('ブロック'),
+                            )
+                          ]),
+                      onSelected: (newValue) {
+                        popupReportAndBlock(context, uid, newValue);
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
           )

@@ -68,7 +68,7 @@ class ChatScreen extends ConsumerWidget {
                       String profile = '';
                       if (user.profilePic == null) {
                         profile =
-                            'https://firebasestorage.googleapis.com/v0/b/pomo-58355.appspot.com/o/profileimages%2F%E3%81%97%E3%81%8A.jpg?alt=media&token=5368ecc5-6a4c-4900-9df8-3655bed49dbf';
+                            'https://img.freepik.com/free-vector/white-minimal-background_1393-354.jpg?w=2000&t=st=1675338343~exp=1675338943~hmac=fcdf46b2d30a1f7eda058fa2df73a244c20dec89cd99e8c28e4d1de05bdb3788';
                       } else {
                         profile = user.profilePic!;
                       }
@@ -155,6 +155,9 @@ class ChatScreen extends ConsumerWidget {
                         onMessageLongPress: (context, message) {}, // 削除処理ぽいのほしい
                         showUserAvatars: true,
                         showUserNames: true,
+                        onAvatarTap: (p0) {
+                          print(p0);
+                        },
                       ),
                     ),
                   ],

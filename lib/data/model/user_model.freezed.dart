@@ -29,6 +29,7 @@ mixin _$UserModel {
   int get currentNumOfPomo => throw _privateConstructorUsedError;
   int get totalPomo => throw _privateConstructorUsedError;
   bool get isOnline => throw _privateConstructorUsedError;
+  List<String>? get blocks => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,7 +51,8 @@ abstract class $UserModelCopyWith<$Res> {
       int goalPomo,
       int currentNumOfPomo,
       int totalPomo,
-      bool isOnline});
+      bool isOnline,
+      List<String>? blocks});
 }
 
 /// @nodoc
@@ -75,6 +77,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? currentNumOfPomo = null,
     Object? totalPomo = null,
     Object? isOnline = null,
+    Object? blocks = freezed,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -113,6 +116,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
               as bool,
+      blocks: freezed == blocks
+          ? _value.blocks
+          : blocks // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ) as $Val);
   }
 }
@@ -133,7 +140,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       int goalPomo,
       int currentNumOfPomo,
       int totalPomo,
-      bool isOnline});
+      bool isOnline,
+      List<String>? blocks});
 }
 
 /// @nodoc
@@ -156,6 +164,7 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? currentNumOfPomo = null,
     Object? totalPomo = null,
     Object? isOnline = null,
+    Object? blocks = freezed,
   }) {
     return _then(_$_UserModel(
       uid: null == uid
@@ -194,6 +203,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
               as bool,
+      blocks: freezed == blocks
+          ? _value._blocks
+          : blocks // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -210,7 +223,9 @@ class _$_UserModel implements _UserModel {
       this.goalPomo = 0,
       this.currentNumOfPomo = 0,
       this.totalPomo = 0,
-      this.isOnline = false});
+      this.isOnline = false,
+      final List<String>? blocks = null})
+      : _blocks = blocks;
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelFromJson(json);
@@ -242,10 +257,20 @@ class _$_UserModel implements _UserModel {
   @override
   @JsonKey()
   final bool isOnline;
+  final List<String>? _blocks;
+  @override
+  @JsonKey()
+  List<String>? get blocks {
+    final value = _blocks;
+    if (value == null) return null;
+    if (_blocks is EqualUnmodifiableListView) return _blocks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, name: $name, email: $email, profilePic: $profilePic, objective: $objective, goalPomo: $goalPomo, currentNumOfPomo: $currentNumOfPomo, totalPomo: $totalPomo, isOnline: $isOnline)';
+    return 'UserModel(uid: $uid, name: $name, email: $email, profilePic: $profilePic, objective: $objective, goalPomo: $goalPomo, currentNumOfPomo: $currentNumOfPomo, totalPomo: $totalPomo, isOnline: $isOnline, blocks: $blocks)';
   }
 
   @override
@@ -267,13 +292,24 @@ class _$_UserModel implements _UserModel {
             (identical(other.totalPomo, totalPomo) ||
                 other.totalPomo == totalPomo) &&
             (identical(other.isOnline, isOnline) ||
-                other.isOnline == isOnline));
+                other.isOnline == isOnline) &&
+            const DeepCollectionEquality().equals(other._blocks, _blocks));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, name, email, profilePic,
-      objective, goalPomo, currentNumOfPomo, totalPomo, isOnline);
+  int get hashCode => Object.hash(
+      runtimeType,
+      uid,
+      name,
+      email,
+      profilePic,
+      objective,
+      goalPomo,
+      currentNumOfPomo,
+      totalPomo,
+      isOnline,
+      const DeepCollectionEquality().hash(_blocks));
 
   @JsonKey(ignore: true)
   @override
@@ -299,7 +335,8 @@ abstract class _UserModel implements UserModel {
       final int goalPomo,
       final int currentNumOfPomo,
       final int totalPomo,
-      final bool isOnline}) = _$_UserModel;
+      final bool isOnline,
+      final List<String>? blocks}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -322,6 +359,8 @@ abstract class _UserModel implements UserModel {
   int get totalPomo;
   @override
   bool get isOnline;
+  @override
+  List<String>? get blocks;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

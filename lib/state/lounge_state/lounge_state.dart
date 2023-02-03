@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pomodolo/data/firebase/firestore.dart';
 import 'package:pomodolo/data/model/pomodolo_model.dart';
+import 'package:pomodolo/data/model/user_model.dart';
 import 'package:pomodolo/shared/interval_type_enum.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;

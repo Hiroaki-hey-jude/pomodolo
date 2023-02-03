@@ -16,6 +16,10 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       currentNumOfPomo: json['currentNumOfPomo'] as int? ?? 0,
       totalPomo: json['totalPomo'] as int? ?? 0,
       isOnline: json['isOnline'] as bool? ?? false,
+      blocks: (json['blocks'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          null,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
@@ -29,4 +33,5 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
       'currentNumOfPomo': instance.currentNumOfPomo,
       'totalPomo': instance.totalPomo,
       'isOnline': instance.isOnline,
+      'blocks': instance.blocks,
     };

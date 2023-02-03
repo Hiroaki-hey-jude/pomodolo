@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pomodolo/data/firebase/auth.dart';
+import 'package:pomodolo/data/firebase/firestore.dart';
 import 'package:pomodolo/screen/auth/login_screen.dart';
 import 'package:pomodolo/shared/constant.dart';
 
@@ -50,7 +52,7 @@ Widget profilePicturesWidget(String id) {
             FirebaseFirestore.instance.collection('users').doc(id).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           String originalImgURL = snapshot.data!.get('profilePic') as String !=
                   ''
               ? snapshot.data!.get('profilePic') as String
@@ -72,11 +74,11 @@ Widget goalPomoWidget(String id) {
             FirebaseFirestore.instance.collection('users').doc(id).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           return Text(
             '${snapshot.data!.get('currentNumOfPomo')}/${snapshot.data!.get('goalPomo')}ポモ',
-            style:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.white60),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white60),
           );
         }),
   );
@@ -190,4 +192,156 @@ popupForDelteAccount(context) {
       });
     },
   );
+}
+
+popupReportAndBlock(context, String uid, String kind) {
+  print(kind);
+  if (kind == '報告') {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(
+                color: Colors.white,
+                width: 3,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
+            backgroundColor: Colors.black.withOpacity(0.5),
+            title: const Text(
+              'ユーザーのコンテンツに何か不適切な内容がありましたか？\n報告されたユーザーには２４時間以内に対策が講じられます',
+              textAlign: TextAlign.left,
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  FireStore().report(uid);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('ご報告ありがとうございました')));
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor),
+                child: const Text('報告する'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: ElevatedButton(
+                  onPressed: () {
+                    print('hihi');
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor),
+                  child: const Text('キャンセル'),
+                ),
+              ),
+            ],
+          );
+        });
+      },
+    );
+  } else {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(
+                color: Colors.white,
+                width: 3,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
+            backgroundColor: Colors.black.withOpacity(0.5),
+            title: const Text(
+              'このユーザーをブロックしますか？',
+              textAlign: TextAlign.left,
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  FireStore().block(uid);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('このユーザーをブロックしました')));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
+                child: const Text('ブロック'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: ElevatedButton(
+                  onPressed: () {
+                    print('hihi');
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor),
+                  child: const Text('キャンセル'),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+  // showDialog(
+  //   barrierDismissible: true,
+  //   context: context,
+  //   builder: (context) {
+  //     return StatefulBuilder(builder: (context, setState) {
+  //       return AlertDialog(
+  //         shape: const RoundedRectangleBorder(
+  //           side: BorderSide(
+  //             color: Colors.white,
+  //             width: 3,
+  //           ),
+  //           borderRadius: BorderRadius.all(
+  //             Radius.circular(10),
+  //           ),
+  //         ),
+  //         backgroundColor: Colors.black.withOpacity(0.5),
+  //         title: const Text(
+  //           '退会するとデータがこれまでのデータが失われてしまいます',
+  //           textAlign: TextAlign.left,
+  //         ),
+  //         actions: [
+  //           ElevatedButton(
+  //             onPressed: () async {
+  //               await Auth().deleteUser();
+  //               Navigator.of(context).pushAndRemoveUntil(
+  //                   MaterialPageRoute(
+  //                       builder: (context) => const LogInScreen()),
+  //                   (route) => false);
+  //             },
+  //             style: ElevatedButton.styleFrom(
+  //                 backgroundColor: Theme.of(context).primaryColor),
+  //             child: const Text('退会する'),
+  //           ),
+  //           Padding(
+  //             padding: const EdgeInsets.only(right: 5),
+  //             child: ElevatedButton(
+  //               onPressed: () {
+  //                 print('hihi');
+  //                 Navigator.of(context).pop();
+  //               },
+  //               style: ElevatedButton.styleFrom(
+  //                   backgroundColor: Theme.of(context).primaryColor),
+  //               child: const Text('キャンセル'),
+  //             ),
+  //           ),
+  //         ],
+  //       );
+  //     });
+  //   },
+  // );
 }

@@ -20,6 +20,7 @@ class FireStore {
       currentNumOfPomo: 0,
       isOnline: false,
       totalPomo: 0,
+      blocks: null,
     );
     //await userCollection.doc(uid).set(user.toFirestore());
     return await userCollection.doc(uid).set({
@@ -32,6 +33,7 @@ class FireStore {
       'currentNumOfPomo': user.currentNumOfPomo,
       'isOnline': user.isOnline,
       'totalPomo': user.totalPomo,
+      'blocks': user.blocks,
     });
   }
 
@@ -61,6 +63,21 @@ class FireStore {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({
       'isOnline': present,
+    });
+  }
+
+  report(String uid) async {
+    await FirebaseFirestore.instance.collection('report').doc(uid).set({
+      'uid': uid,
+    });
+  }
+
+  block(String uid) async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'blocks': FieldValue.arrayUnion([uid]),
     });
   }
 }

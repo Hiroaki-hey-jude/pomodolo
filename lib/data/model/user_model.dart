@@ -16,6 +16,7 @@ class UserModel with _$UserModel {
     @Default(0) int currentNumOfPomo,
     @Default(0) int totalPomo,
     @Default(false) bool isOnline,
+    @Default(null) List<String>? blocks,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

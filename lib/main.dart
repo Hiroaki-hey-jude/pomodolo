@@ -67,7 +67,7 @@ class _MyAppHomeState extends State<MyAppHome> {
     // TODO: implement initState
     super.initState();
     getUserLoggedInStatus();
-    //initPlugin();
+    initPlugin();
   }
 
   getUserLoggedInStatus() async {
