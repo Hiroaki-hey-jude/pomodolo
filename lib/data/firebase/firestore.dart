@@ -43,13 +43,21 @@ class FireStore {
     return querySnapshot;
   }
 
+  // 現在ログインしているユーザのFirestore情報取得
+  Future<UserModel> getCurrentUserModel() async {
+    final model =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    final userModel = UserModel.fromSnapshot(model);
+    return userModel;
+  }
+
   getCurrentPomo(String uid) async {
     final currentPomo = await userCollection.doc(uid).get();
     return currentPomo;
   }
 
-  startTimer(int goalPomo, String objectve, String uid) {
-    userCollection.doc(uid).update({
+  Future<void> startTimer(int goalPomo, String objectve, String uid) async {
+    await userCollection.doc(uid).update({
       'goalPomo': goalPomo,
       'isOnline': true,
       'objective': objectve,
