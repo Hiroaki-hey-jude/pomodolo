@@ -203,7 +203,9 @@ class LoungeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildBody(
+    BuildContext context,
+  ) {
     final mediaQueryData = MediaQuery.of(context);
     final screenHeight = mediaQueryData.size.height;
     double onlineContainer = 0;
@@ -414,20 +416,20 @@ class LoungeScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    Consumer(builder: (context, ref, child) {
-                      final state = ref.watch(loungeStateProvider);
-                      return StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection('users')
-                            .where('isOnline', isEqualTo: true)
-                            .snapshots(),
-                        builder: (context, AsyncSnapshot snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .where('isOnline', isEqualTo: true)
+                          .snapshots(),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return Consumer(builder: (context, ref, child) {
+                          final state = ref.read(loungeStateProvider);
                           return Expanded(
                             child: ListView.builder(
                               shrinkWrap: true,
@@ -451,9 +453,9 @@ class LoungeScreen extends StatelessWidget {
                               }),
                             ),
                           );
-                        },
-                      );
-                    })
+                        });
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -629,58 +631,63 @@ class LoungeScreen extends StatelessWidget {
     BuildContext context,
   ) {
     return uid != FirebaseAuth.instance.currentUser!.uid
-        ? SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: ListTile(
-                tileColor: Colors.yellow[100],
-                textColor: Colors.black54,
-                leading: profilePicturesWidget(uid),
-                title: Text(userName,
+        ? Consumer(builder: (context, ref, child) {
+            final notifier = ref.watch(loungeStateProvider.notifier);
+            return SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: ListTile(
+                  tileColor: Colors.yellow[100],
+                  textColor: Colors.black54,
+                  leading: profilePicturesWidget(uid),
+                  title: Text(userName,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white60,
+                      )),
+                  subtitle: Text(
+                    objective,
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white60,
-                    )),
-                subtitle: Text(
-                  objective,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white70,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      goalPomoWidget(uid),
+                      PopupMenuButton(
+                        constraints: const BoxConstraints(),
+                        padding: EdgeInsets.zero,
+                        itemBuilder: ((context) => [
+                              const PopupMenuItem(
+                                value: '報告',
+                                child: Text('報告'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'ブロック',
+                                child: Text('ブロック'),
+                              )
+                            ]),
+                        onSelected: (newValue) {
+                          popupReportAndBlock(
+                              context: context,
+                              uid: uid,
+                              kind: newValue,
+                              name: userName,
+                              onBlockTap: () {
+                                notifier.getUserData();
+                              });
+                        },
+                        child: const Icon(Icons.more_vert),
+                      ),
+                    ],
                   ),
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    goalPomoWidget(uid),
-                    PopupMenuButton(
-                      constraints: const BoxConstraints(),
-                      padding: EdgeInsets.zero,
-                      itemBuilder: ((context) => [
-                            const PopupMenuItem(
-                              value: '報告',
-                              child: Text('報告'),
-                            ),
-                            const PopupMenuItem(
-                              value: 'ブロック',
-                              child: Text('ブロック'),
-                            )
-                          ]),
-                      onSelected: (newValue) {
-                        popupReportAndBlock(
-                          context: context,
-                          uid: uid,
-                          kind: newValue,
-                          name: userName,
-                        );
-                      },
-                      child: const Icon(Icons.more_vert),
-                    ),
-                  ],
-                ),
               ),
-            ),
-          )
+            );
+          })
         : Container();
   }
 }

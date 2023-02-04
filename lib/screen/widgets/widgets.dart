@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodolo/data/firebase/auth.dart';
 import 'package:pomodolo/data/firebase/firestore.dart';
 import 'package:pomodolo/screen/auth/login_screen.dart';
 import 'package:pomodolo/shared/constant.dart';
-import 'package:pomodolo/state/lounge_state/lounge_state.dart';
 
 void nextScreen(context, page) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => page));
@@ -274,26 +272,21 @@ popupReportAndBlock({
               textAlign: TextAlign.left,
             ),
             actions: [
-              Consumer(builder: (context, ref, child) {
-                final notifier = ref.watch(loungeStateProvider.notifier);
-                return ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    FireStore().block(uid);
-                    notifier.getUserData();
-                    if (onBlockTap != null) {
-                      onBlockTap();
-                      print('できてる？');
-                    }
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('このユーザーをブロックしました')));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                  child: const Text('ブロック'),
-                );
-              }),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  FireStore().block(uid);
+                  if (onBlockTap != null) {
+                    onBlockTap();
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('このユーザーをブロックしました')));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
+                child: const Text('ブロック'),
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 5),
                 child: ElevatedButton(
