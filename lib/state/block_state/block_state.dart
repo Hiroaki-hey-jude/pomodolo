@@ -41,7 +41,9 @@ class BlockStateNotifier extends StateNotifier<BlockState> {
     }
     print('ここのブロック$blocks');
     print('kokokoko');
-    print('ここのリスト$list');
+    if (!mounted) {
+      return;
+    }
     state = state.copyWith(isLoading: false, blocks: list);
   }
 
