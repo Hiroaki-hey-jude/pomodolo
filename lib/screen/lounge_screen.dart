@@ -435,9 +435,11 @@ class LoungeScreen extends StatelessWidget {
                               itemCount: snapshot.data.docs.length,
                               itemBuilder: ((context, index) {
                                 final uid = snapshot.data!.docs[index]['uid'];
+                                if (state.currentUser != null) {
                                 if (state.currentUser!.blocks != null &&
                                     state.currentUser!.blocks!.contains(uid)) {
                                   return Container();
+                                }
                                 }
                                 return userTile(
                                     snapshot.data!.docs[index]['name'],
