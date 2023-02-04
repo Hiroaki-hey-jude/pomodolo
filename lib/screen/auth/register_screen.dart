@@ -118,7 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () async {
                                                   final Uri _url = Uri.parse(
-                                                      'https://cut-primula-dac.notion.site/4581a5ada23945d7a11862cb9140a34e');
+                                                      'https://cut-primula-dac.notion.site/27bc1799880d49c7877e6f2f0e348296');
                                                   if (!await launchUrl(_url)) {
                                                   } else {
                                                     throw 'このURLにはアクセスできません';
@@ -138,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () async {
                                                   final Uri _url = Uri.parse(
-                                                      'https://cut-primula-dac.notion.site/b07b0b0a444847f2990172e9dddef2d2');
+                                                      'https://cut-primula-dac.notion.site/8d53f61435014ba689333c514befb566');
                                                   if (!await launchUrl(_url)) {
                                                   } else {
                                                     throw 'このURLにはアクセスできません';
@@ -227,13 +227,90 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 fontSize: 16),
                                           ),
                                           onPressed: () {
-                                            notifier.register(
-                                              context,
-                                              formKey,
-                                              nameEditingController.text,
-                                              emailEditingController.text,
-                                              passwordEditingController.text,
-                                            );
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return StatefulBuilder(
+                                                      builder:
+                                                          (context, setState) {
+                                                    return AlertDialog(
+                                                      shape:
+                                                          const RoundedRectangleBorder(
+                                                        side: BorderSide(
+                                                          color: Colors.white,
+                                                          width: 3,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10),
+                                                        ),
+                                                      ),
+                                                      backgroundColor: Colors
+                                                          .black
+                                                          .withOpacity(0.5),
+                                                      title: const Text(
+                                                        '利用規約に同意してアカウントを作成する',
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                      ),
+                                                      actions: [
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            notifier.register(
+                                                              context,
+                                                              formKey,
+                                                              nameEditingController
+                                                                  .text,
+                                                              emailEditingController
+                                                                  .text,
+                                                              passwordEditingController
+                                                                  .text,
+                                                            );
+                                                          },
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                const Color
+                                                                        .fromARGB(
+                                                                    255,
+                                                                    79,
+                                                                    121,
+                                                                    193),
+                                                          ),
+                                                          child: const Text(
+                                                              '同意する'),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 5),
+                                                          child: ElevatedButton(
+                                                            onPressed: () {
+                                                              print('hihi');
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  const Color
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      79,
+                                                                      121,
+                                                                      193),
+                                                            ),
+                                                            child: const Text(
+                                                                'キャンセル'),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
+                                                });
                                           }),
                                     ),
                                     const SizedBox(height: 15),

@@ -28,12 +28,6 @@ class RegisterState with _$RegisterState {
 class RegisterStateNotifier extends StateNotifier<RegisterState> {
   RegisterStateNotifier() : super(const RegisterState());
 
-  // Future<void> example() async {
-  //   // state = state.copyWith(isLoading: true);
-  //   // // なんかの処理する
-  //   // state = state.copyWith(isLoading: false);
-  // }
-
   void getName(String userName) {
     print('hihi');
     state = state.copyWith(userModel: UserModel(name: userName));
@@ -73,9 +67,9 @@ class RegisterStateNotifier extends StateNotifier<RegisterState> {
         await SharedPreferencesData().saveUserNameSF(name);
         nextScreenReplacement(context, const LoungeScreen());
       } else if (emailSignResults == EmailSignResults.SignUpNotCompleted) {
-        message = 'Sign up not completed, try again';
+        message = 'ユーザー登録に失敗しました。もう一回試してください';
       } else {
-        message = 'Email alaready present';
+        message = 'このメールアドレスはすでに存在します';
       }
       if (message != '')
         ScaffoldMessenger.of(context)

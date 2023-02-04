@@ -196,10 +196,12 @@ popupForDelteAccount(context) {
   );
 }
 
+
 popupReportAndBlock({
   context,
   required String uid,
   required String kind,
+  required String name,
   void Function()? onBlockTap,
 }) {
   print(kind);
@@ -278,7 +280,7 @@ popupReportAndBlock({
                 return ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    FireStore().block(uid);
+                    FireStore().block(uid, name);
                     notifier.getUserData();
                     if (onBlockTap != null) {
                       onBlockTap();

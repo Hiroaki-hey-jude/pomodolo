@@ -673,7 +673,9 @@ class LoungeScreen extends StatelessWidget {
                           context: context,
                           uid: uid,
                           kind: newValue,
+                          name: userName,
                         );
+
                       },
                       child: const Icon(Icons.more_vert),
                     ),

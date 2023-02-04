@@ -207,6 +207,7 @@ class ChatScreen extends ConsumerWidget {
                   popupReportAndBlock(
                     context: context,
                     uid: user.id,
+                    name: user.firstName!,
                     kind: '報告',
                   );
                 },
@@ -218,6 +219,7 @@ class ChatScreen extends ConsumerWidget {
                   popupReportAndBlock(
                       context: context,
                       uid: user.id,
+                      name: user.firstName!,
                       kind: 'ブロック',
                       onBlockTap: () async {
                         await notifier.fetchCurrentUserInfo();

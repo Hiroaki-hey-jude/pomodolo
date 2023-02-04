@@ -79,11 +79,11 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
         nextScreenReplacement(context, const LoungeScreen());
       } else if (emailLogInResults == EmailLogInResults.EmailNotVerified) {
         message =
-            'Email not verified. \nPlease Verify your Email and then log in';
+            'メールアドレスが確認されませんでした \nユーザー登録をしてください';
       } else if (emailLogInResults == EmailLogInResults.EmailPasswordInvalid) {
-        message = 'Email Or Password Invalid';
+        message = 'メールアドレスかパスワードが違います';
       } else
-        message = 'Log in not completed';
+        message = 'ログインに失敗しました';
 
       if (message != '')
         ScaffoldMessenger.of(context)

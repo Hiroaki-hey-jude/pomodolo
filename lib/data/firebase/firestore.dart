@@ -45,6 +45,7 @@ class FireStore {
 
   // 現在ログインしているユーザのFirestore情報取得
   Future<UserModel> getCurrentUserModel() async {
+    print('kokokitemasuka');
     final model =
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
     final userModel = UserModel.fromSnapshot(model);
@@ -80,12 +81,21 @@ class FireStore {
     });
   }
 
-  block(String uid) async {
+  block(String uid, String name) async {
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({
-      'blocks': FieldValue.arrayUnion([uid]),
+      'blocks': FieldValue.arrayUnion(['${uid}_$name']),
+    });
+  }
+
+  unBlock(String uid, String name) async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'blocks': FieldValue.arrayRemove(['${uid}_$name']),
     });
   }
 }
