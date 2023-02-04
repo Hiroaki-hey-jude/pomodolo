@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodolo/data/firebase/auth.dart';
 import 'package:pomodolo/data/firebase/firestore.dart';
 import 'package:pomodolo/screen/auth/login_screen.dart';
 import 'package:pomodolo/shared/constant.dart';
+import 'package:pomodolo/state/lounge_state/lounge_state.dart';
 
 void nextScreen(context, page) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => page));
@@ -51,13 +52,13 @@ Widget profilePicturesWidget(String id) {
         stream:
             FirebaseFirestore.instance.collection('users').doc(id).snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          String originalImgURL = snapshot.data!.get('profilePic') as String !=
-                  ''
-              ? snapshot.data!.get('profilePic') as String
-              : 'https://img.freepik.com/free-vector/white-minimal-background_1393-354.jpg?w=2000&t=st=1675338343~exp=1675338943~hmac=fcdf46b2d30a1f7eda058fa2df73a244c20dec89cd99e8c28e4d1de05bdb3788';
-          print(originalImgURL);
+          }
+          String originalImgURL =
+              snapshot.data!.get('profilePic') as String != ''
+                  ? snapshot.data!.get('profilePic') as String
+                  : Constant.anonymousProfilePic;
           return CircleAvatar(
             radius: 30,
             backgroundImage: NetworkImage(originalImgURL),
@@ -73,8 +74,9 @@ Widget goalPomoWidget(String id) {
         stream:
             FirebaseFirestore.instance.collection('users').doc(id).snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
+          }
           return Text(
             '${snapshot.data!.get('currentNumOfPomo')}/${snapshot.data!.get('goalPomo')}ポモ',
             style: const TextStyle(
@@ -194,7 +196,14 @@ popupForDelteAccount(context) {
   );
 }
 
-popupReportAndBlock(context, String uid, String kind, String name) {
+
+popupReportAndBlock({
+  context,
+  required String uid,
+  required String kind,
+  required String name,
+  void Function()? onBlockTap,
+}) {
   print(kind);
   if (kind == '報告') {
     showDialog(
@@ -266,18 +275,26 @@ popupReportAndBlock(context, String uid, String kind, String name) {
               textAlign: TextAlign.left,
             ),
             actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  FireStore().block(uid, name);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('このユーザーをブロックしました')));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-                child: const Text('ブロック'),
-              ),
+              Consumer(builder: (context, ref, child) {
+                final notifier = ref.watch(loungeStateProvider.notifier);
+                return ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    FireStore().block(uid, name);
+                    notifier.getUserData();
+                    if (onBlockTap != null) {
+                      onBlockTap();
+                      print('できてる？');
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('このユーザーをブロックしました')));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  child: const Text('ブロック'),
+                );
+              }),
               Padding(
                 padding: const EdgeInsets.only(right: 5),
                 child: ElevatedButton(

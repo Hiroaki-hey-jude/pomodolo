@@ -4,13 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pomodolo/data/firebase/firestore.dart';
 import 'package:pomodolo/data/model/chat_message_model.dart';
 import 'package:pomodolo/data/model/user_model.dart';
 import 'package:uuid/uuid.dart';
 
 part 'chat_state.freezed.dart';
 
-final chatStateProvider = StateNotifierProvider<ChatStateNotifier, ChatState>(
+final chatStateProvider =
+    StateNotifierProvider.autoDispose<ChatStateNotifier, ChatState>(
   (ref) => ChatStateNotifier(),
 );
 
@@ -49,17 +51,16 @@ class ChatStateNotifier extends StateNotifier<ChatState> {
 
   // チャットで使用するログインユーザー情報取得
   Future<void> fetchCurrentUserInfo() async {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    final model =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    final userModel = UserModel.fromSnapshot(model);
+    final userModel =
+        await FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
+            .getCurrentUserModel();
     if (!mounted) {
       return;
     }
     state = state.copyWith(currentUser: userModel);
   }
 
-  // チャットで使用するログインユーザー情報取得
+  // チャットで使用する全てのユーザー情報取得
   Future<void> fetchUserInfo() async {
     List<UserModel> list = [];
     final users = await FirebaseFirestore.instance.collection('users').get();

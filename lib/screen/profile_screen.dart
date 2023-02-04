@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pomodolo/screen/block_screen.dart';
 import 'package:pomodolo/screen/widgets/widgets.dart';
+import 'package:pomodolo/shared/constant.dart';
 import 'package:pomodolo/state/profile_state/profile_state.dart';
 
 import '../data/sharedpreference/sharedPreferencesData.dart';
@@ -82,11 +81,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting)
                           return Center(child: CircularProgressIndicator());
-                        String originalImgURL = snapshot.data!.get('profilePic')
-                                    as String !=
-                                ''
-                            ? snapshot.data!.get('profilePic') as String
-                            : 'https://img.freepik.com/free-vector/white-minimal-background_1393-354.jpg?w=2000&t=st=1675338343~exp=1675338943~hmac=fcdf46b2d30a1f7eda058fa2df73a244c20dec89cd99e8c28e4d1de05bdb3788';
+                        String originalImgURL =
+                            snapshot.data!.get('profilePic') as String != ''
+                                ? snapshot.data!.get('profilePic') as String
+                                : Constant.anonymousProfilePic;
                         return Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 40, vertical: 50),

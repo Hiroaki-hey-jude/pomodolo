@@ -23,6 +23,7 @@ mixin _$LoungeState {
   IntervalType get intervalType => throw _privateConstructorUsedError;
   PomodoloModel get pomodoloModel => throw _privateConstructorUsedError;
   int? get currentPomo => throw _privateConstructorUsedError;
+  UserModel? get currentUser => throw _privateConstructorUsedError;
   String? get userName => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -44,9 +45,11 @@ abstract class $LoungeStateCopyWith<$Res> {
       IntervalType intervalType,
       PomodoloModel pomodoloModel,
       int? currentPomo,
+      UserModel? currentUser,
       String? userName});
 
   $PomodoloModelCopyWith<$Res> get pomodoloModel;
+  $UserModelCopyWith<$Res>? get currentUser;
 }
 
 /// @nodoc
@@ -69,6 +72,7 @@ class _$LoungeStateCopyWithImpl<$Res, $Val extends LoungeState>
     Object? intervalType = null,
     Object? pomodoloModel = null,
     Object? currentPomo = freezed,
+    Object? currentUser = freezed,
     Object? userName = freezed,
   }) {
     return _then(_value.copyWith(
@@ -100,6 +104,10 @@ class _$LoungeStateCopyWithImpl<$Res, $Val extends LoungeState>
           ? _value.currentPomo
           : currentPomo // ignore: cast_nullable_to_non_nullable
               as int?,
+      currentUser: freezed == currentUser
+          ? _value.currentUser
+          : currentUser // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
       userName: freezed == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
@@ -112,6 +120,18 @@ class _$LoungeStateCopyWithImpl<$Res, $Val extends LoungeState>
   $PomodoloModelCopyWith<$Res> get pomodoloModel {
     return $PomodoloModelCopyWith<$Res>(_value.pomodoloModel, (value) {
       return _then(_value.copyWith(pomodoloModel: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res>? get currentUser {
+    if (_value.currentUser == null) {
+      return null;
+    }
+
+    return $UserModelCopyWith<$Res>(_value.currentUser!, (value) {
+      return _then(_value.copyWith(currentUser: value) as $Val);
     });
   }
 }
@@ -132,10 +152,13 @@ abstract class _$$_LoungeStateCopyWith<$Res>
       IntervalType intervalType,
       PomodoloModel pomodoloModel,
       int? currentPomo,
+      UserModel? currentUser,
       String? userName});
 
   @override
   $PomodoloModelCopyWith<$Res> get pomodoloModel;
+  @override
+  $UserModelCopyWith<$Res>? get currentUser;
 }
 
 /// @nodoc
@@ -156,6 +179,7 @@ class __$$_LoungeStateCopyWithImpl<$Res>
     Object? intervalType = null,
     Object? pomodoloModel = null,
     Object? currentPomo = freezed,
+    Object? currentUser = freezed,
     Object? userName = freezed,
   }) {
     return _then(_$_LoungeState(
@@ -187,6 +211,10 @@ class __$$_LoungeStateCopyWithImpl<$Res>
           ? _value.currentPomo
           : currentPomo // ignore: cast_nullable_to_non_nullable
               as int?,
+      currentUser: freezed == currentUser
+          ? _value.currentUser
+          : currentUser // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
       userName: freezed == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
@@ -206,6 +234,7 @@ class _$_LoungeState implements _LoungeState {
       this.intervalType = IntervalType.rest,
       required this.pomodoloModel,
       this.currentPomo = null,
+      this.currentUser = null,
       this.userName = null});
 
   @override
@@ -229,11 +258,14 @@ class _$_LoungeState implements _LoungeState {
   final int? currentPomo;
   @override
   @JsonKey()
+  final UserModel? currentUser;
+  @override
+  @JsonKey()
   final String? userName;
 
   @override
   String toString() {
-    return 'LoungeState(isLoading: $isLoading, timer: $timer, time: $time, isResting: $isResting, intervalType: $intervalType, pomodoloModel: $pomodoloModel, currentPomo: $currentPomo, userName: $userName)';
+    return 'LoungeState(isLoading: $isLoading, timer: $timer, time: $time, isResting: $isResting, intervalType: $intervalType, pomodoloModel: $pomodoloModel, currentPomo: $currentPomo, currentUser: $currentUser, userName: $userName)';
   }
 
   @override
@@ -253,13 +285,24 @@ class _$_LoungeState implements _LoungeState {
                 other.pomodoloModel == pomodoloModel) &&
             (identical(other.currentPomo, currentPomo) ||
                 other.currentPomo == currentPomo) &&
+            (identical(other.currentUser, currentUser) ||
+                other.currentUser == currentUser) &&
             (identical(other.userName, userName) ||
                 other.userName == userName));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, timer, time,
-      isResting, intervalType, pomodoloModel, currentPomo, userName);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      timer,
+      time,
+      isResting,
+      intervalType,
+      pomodoloModel,
+      currentPomo,
+      currentUser,
+      userName);
 
   @JsonKey(ignore: true)
   @override
@@ -277,6 +320,7 @@ abstract class _LoungeState implements LoungeState {
       final IntervalType intervalType,
       required final PomodoloModel pomodoloModel,
       final int? currentPomo,
+      final UserModel? currentUser,
       final String? userName}) = _$_LoungeState;
 
   @override
@@ -293,6 +337,8 @@ abstract class _LoungeState implements LoungeState {
   PomodoloModel get pomodoloModel;
   @override
   int? get currentPomo;
+  @override
+  UserModel? get currentUser;
   @override
   String? get userName;
   @override

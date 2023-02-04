@@ -33,6 +33,7 @@ class LoungeState with _$LoungeState {
     @Default(IntervalType.rest) IntervalType intervalType,
     required PomodoloModel pomodoloModel,
     @Default(null) int? currentPomo,
+    @Default(null) UserModel? currentUser,
     @Default(null) String? userName,
   }) = _LoungeState;
 }
@@ -90,10 +91,18 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     super.dispose();
   }
 
-  getUserData() async {
-    await SharedPreferencesData().getUserNameFromSF().then((value) {
-      state = state.copyWith(userName: value);
-    });
+  Future<void> getUserData() async {
+    final userName = await SharedPreferencesData().getUserNameFromSF();
+    final userModel =
+        await FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
+            .getCurrentUserModel();
+    if (!mounted) {
+      return;
+    }
+    state = state.copyWith(
+      userName: userName,
+      currentUser: userModel,
+    );
   }
 
   // 時間がゼロになったらタイマーを止める
@@ -329,9 +338,10 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     return notificationId;
   }
 
-  initialStart(String objectve, int goalPomo, String uid) {
+  Future<void> initialStart(String objectve, int goalPomo, String uid) async {
     state = state.copyWith(intervalType: IntervalType.work);
-    FireStore().startTimer(goalPomo, objectve, uid);
+    await FireStore().startTimer(goalPomo, objectve, uid);
+    await getUserData();
   }
 
   changeState() {
