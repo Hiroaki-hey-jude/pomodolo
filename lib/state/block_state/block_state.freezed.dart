@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$BlockState {
   bool get isLoading => throw _privateConstructorUsedError;
-  List<String> get blocks => throw _privateConstructorUsedError;
+  List<UserModel> get blocks => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BlockStateCopyWith<BlockState> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $BlockStateCopyWith<$Res> {
           BlockState value, $Res Function(BlockState) then) =
       _$BlockStateCopyWithImpl<$Res, BlockState>;
   @useResult
-  $Res call({bool isLoading, List<String> blocks});
+  $Res call({bool isLoading, List<UserModel> blocks});
 }
 
 /// @nodoc
@@ -57,7 +57,7 @@ class _$BlockStateCopyWithImpl<$Res, $Val extends BlockState>
       blocks: null == blocks
           ? _value.blocks
           : blocks // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<UserModel>,
     ) as $Val);
   }
 }
@@ -70,7 +70,7 @@ abstract class _$$_BlockStateCopyWith<$Res>
       __$$_BlockStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, List<String> blocks});
+  $Res call({bool isLoading, List<UserModel> blocks});
 }
 
 /// @nodoc
@@ -95,7 +95,7 @@ class __$$_BlockStateCopyWithImpl<$Res>
       blocks: null == blocks
           ? _value._blocks
           : blocks // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<UserModel>,
     ));
   }
 }
@@ -104,16 +104,17 @@ class __$$_BlockStateCopyWithImpl<$Res>
 
 class _$_BlockState implements _BlockState {
   const _$_BlockState(
-      {this.isLoading = false, final List<String> blocks = const <String>[]})
+      {this.isLoading = false,
+      final List<UserModel> blocks = const <UserModel>[]})
       : _blocks = blocks;
 
   @override
   @JsonKey()
   final bool isLoading;
-  final List<String> _blocks;
+  final List<UserModel> _blocks;
   @override
   @JsonKey()
-  List<String> get blocks {
+  List<UserModel> get blocks {
     if (_blocks is EqualUnmodifiableListView) return _blocks;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_blocks);
@@ -146,13 +147,13 @@ class _$_BlockState implements _BlockState {
 }
 
 abstract class _BlockState implements BlockState {
-  const factory _BlockState({final bool isLoading, final List<String> blocks}) =
-      _$_BlockState;
+  const factory _BlockState(
+      {final bool isLoading, final List<UserModel> blocks}) = _$_BlockState;
 
   @override
   bool get isLoading;
   @override
-  List<String> get blocks;
+  List<UserModel> get blocks;
   @override
   @JsonKey(ignore: true)
   _$$_BlockStateCopyWith<_$_BlockState> get copyWith =>

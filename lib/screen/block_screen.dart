@@ -11,14 +11,6 @@ class BlockScreen extends ConsumerStatefulWidget {
 }
 
 class _BlockScreenState extends ConsumerState<BlockScreen> {
-  String getId(String res) {
-    return res.substring(0, res.indexOf("_"));
-  }
-
-  String getName(String r) {
-    return r.substring(r.indexOf('_') + 1);
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(blockStateProvider);
@@ -45,41 +37,38 @@ class _BlockScreenState extends ConsumerState<BlockScreen> {
           SafeArea(
               child: state.isLoading
                   ? Container()
-                  : Container(
-                      child: ListView.builder(
-                        itemCount: state.blocks.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: profilePicturesWidget(
-                              getId(state.blocks[index]),
-                            ),
-                            title: Text(
-                              getName(state.blocks[index].toString()),
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            trailing: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                side: const BorderSide(
-                                  color: Colors.white30,
-                                ),
-                              ),
-                              onPressed: () {
-                                notifier.unBlockUser(
-                                    getId(state.blocks[index]), getName(state.blocks[index].toString()));
-                              },
-                              child: const Text(
-                                'ブロックを外す',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  : ListView.builder(
+                      itemCount: state.blocks.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading:
+                              profilePicturesWidget(state.blocks[index].uid),
+                          title: Text(
+                            state.blocks[index].name,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          trailing: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              side: const BorderSide(
+                                color: Colors.white30,
                               ),
                             ),
-                          );
-                        },
-                      ),
+                            onPressed: () {
+                              notifier.unBlockUser(
+                                state.blocks[index].uid,
+                              );
+                            },
+                            child: const Text(
+                              'ブロックを外す',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ))
         ],
       ),

@@ -19,7 +19,7 @@ import '../../shared/status.dart';
 part 'lounge_state.freezed.dart';
 
 final loungeStateProvider =
-    StateNotifierProvider<LoungeStateNotifier, LoungeState>(
+    StateNotifierProvider.autoDispose<LoungeStateNotifier, LoungeState>(
   (ref) => LoungeStateNotifier(),
 );
 

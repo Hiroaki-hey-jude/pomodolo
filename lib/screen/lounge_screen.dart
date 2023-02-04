@@ -20,8 +20,6 @@ class LoungeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> blocks = [];
-
     return Scaffold(
       drawer: _buildDrawer(context),
       appBar: AppBar(
@@ -675,7 +673,6 @@ class LoungeScreen extends StatelessWidget {
                           kind: newValue,
                           name: userName,
                         );
-
                       },
                       child: const Icon(Icons.more_vert),
                     ),

@@ -81,21 +81,21 @@ class FireStore {
     });
   }
 
-  block(String uid, String name) async {
+  block(String uid) async {
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({
-      'blocks': FieldValue.arrayUnion(['${uid}_$name']),
+      'blocks': FieldValue.arrayUnion([uid]),
     });
   }
 
-  unBlock(String uid, String name) async {
+  unBlock(String uid) async {
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({
-      'blocks': FieldValue.arrayRemove(['${uid}_$name']),
+      'blocks': FieldValue.arrayRemove([uid]),
     });
   }
 }
