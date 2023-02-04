@@ -436,10 +436,11 @@ class LoungeScreen extends StatelessWidget {
                               itemBuilder: ((context, index) {
                                 final uid = snapshot.data!.docs[index]['uid'];
                                 if (state.currentUser != null) {
-                                if (state.currentUser!.blocks != null &&
-                                    state.currentUser!.blocks!.contains(uid)) {
-                                  return Container();
-                                }
+                                  if (state.currentUser!.blocks != null &&
+                                      state.currentUser!.blocks!
+                                          .contains(uid)) {
+                                    return Container();
+                                  }
                                 }
                                 return userTile(
                                     snapshot.data!.docs[index]['name'],
@@ -485,7 +486,7 @@ class LoungeScreen extends StatelessWidget {
             ),
             backgroundColor: Colors.white,
             title: const Text(
-              "Let's pomodolo!",
+              "Let's pomodoro!",
               style: TextStyle(color: Color.fromARGB(255, 96, 96, 96)),
               textAlign: TextAlign.center,
             ),
@@ -647,7 +648,8 @@ class LoungeScreen extends StatelessWidget {
                 subtitle: Text(
                   objective,
                   style: const TextStyle(
-                    fontWeight: FontWeight.w500,
+                    // fontWeight: FontWeight.w500,
+                    fontSize: 12,
                     color: Colors.white70,
                   ),
                 ),

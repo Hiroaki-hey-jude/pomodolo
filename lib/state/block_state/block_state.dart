@@ -31,12 +31,17 @@ class BlockStateNotifier extends StateNotifier<BlockState> {
         await FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
             .getCurrentUserModel();
     final blocks = userModel.blocks;
-    blocks?.forEach((uid) async {
-      final userModel = await FireStore(uid: uid).getCurrentUserModel();
-      list.add(userModel);
-    });
-    print(blocks);
+    print('はじめのブロック$blocks');
+    if (blocks != []) {
+      print('ここきてますかifの中');
+      for (var uid in blocks!) {
+        final userModel = await FireStore(uid: uid).getCurrentUserModel();
+        list.add(userModel);
+      };
+    }
+    print('ここのブロック$blocks');
     print('kokokoko');
+    print('ここのリスト$list');
     state = state.copyWith(isLoading: false, blocks: list);
   }
 
@@ -49,6 +54,7 @@ class BlockStateNotifier extends StateNotifier<BlockState> {
             .getCurrentUserModel();
     final blocks = userModel.blocks;
     if (blocks != []) {
+      print('kjojsdf');
       for (var uid in blocks!) {
         final userModel = await FireStore(uid: uid).getCurrentUserModel();
         list.add(userModel);
