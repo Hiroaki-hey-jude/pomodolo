@@ -416,38 +416,46 @@ class LoungeScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('users')
-                          .where('isOnline', isEqualTo: true)
-                          .snapshots(),
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                    Consumer(builder: (context, ref, child) {
+                      final state = ref.watch(loungeStateProvider);
+                      return StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('users')
+                            .where('isOnline', isEqualTo: true)
+                            .snapshots(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: snapshot.data.docs.length,
+                              itemBuilder: ((context, index) {
+                                final uid = snapshot.data!.docs[index]['uid'];
+                                if (state.currentUser!.blocks != null &&
+                                    state.currentUser!.blocks!.contains(uid)) {
+                                  return Container();
+                                }
+                                return userTile(
+                                    snapshot.data!.docs[index]['name'],
+                                    snapshot.data!.docs[index]['profilePic'],
+                                    snapshot.data!.docs[index]['goalPomo'],
+                                    snapshot.data!.docs[index]['objective'],
+                                    snapshot.data!.docs[index]['uid'],
+                                    snapshot.data!.docs[index]
+                                        ['currentNumOfPomo'],
+                                    context);
+                              }),
+                            ),
                           );
-                        }
-                        return Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: ((context, index) {
-                              return userTile(
-                                  snapshot.data!.docs[index]['name'],
-                                  snapshot.data!.docs[index]['profilePic'],
-                                  snapshot.data!.docs[index]['goalPomo'],
-                                  snapshot.data!.docs[index]['objective'],
-                                  snapshot.data!.docs[index]['uid'],
-                                  snapshot.data!.docs[index]
-                                      ['currentNumOfPomo'],
-                                  context);
-                            }),
-                          ),
-                        );
-                      },
-                    )
+                        },
+                      );
+                    })
                   ],
                 ),
               ),
@@ -661,10 +669,14 @@ class LoungeScreen extends StatelessWidget {
                             )
                           ]),
                       onSelected: (newValue) {
-                        popupReportAndBlock(context, uid, newValue);
+                        popupReportAndBlock(
+                          context: context,
+                          uid: uid,
+                          kind: newValue,
+                        );
                       },
                       child: const Icon(Icons.more_vert),
-                    )
+                    ),
                   ],
                 ),
               ),

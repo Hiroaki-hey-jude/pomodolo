@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pomodolo/shared/constant.dart';
 import 'package:pomodolo/state/profile_state/profile_state.dart';
 
 import '../data/sharedpreference/sharedPreferencesData.dart';
@@ -80,11 +79,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting)
                           return Center(child: CircularProgressIndicator());
-                        String originalImgURL = snapshot.data!.get('profilePic')
-                                    as String !=
-                                ''
-                            ? snapshot.data!.get('profilePic') as String
-                            : 'https://images.unsplash.com/flagged/photo-1572392640988-ba48d1a74457?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80';
+                        String originalImgURL =
+                            snapshot.data!.get('profilePic') as String != ''
+                                ? snapshot.data!.get('profilePic') as String
+                                : Constant.anonymousProfilePic;
                         return Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 40, vertical: 50),
