@@ -43,7 +43,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   bool? _isTimerPaused; // バックグラウンドに遷移した際にタイマーがもともと起動中で、停止したかどうか
-  late DateTime? _pausedTime; // バックグラウンドに遷移した時間
+  late DateTime? _pausedTime = null; // バックグラウンドに遷移した時間
   late int? _notificationId; // 通知ID
   LoungeStateNotifier()
       : super(LoungeState(
@@ -68,11 +68,11 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     switch (state) {
       case AppLifecycleState.inactive:
         print('非アクティブになったときの処理');
+        handleOnPaused();
         break;
       case AppLifecycleState.paused:
         print('停止されたときの処理');
         FireStore().toggleOnline(false);
-        handleOnPaused();
         break;
       case AppLifecycleState.resumed:
         print('再開されたときの処理');
@@ -81,6 +81,9 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         break;
       case AppLifecycleState.detached:
         print('破棄されたときの処理');
+        FireStore().toggleOnline(false);
+        _notificationId = null;
+        _pausedTime = null;
         break;
     }
   }
@@ -181,7 +184,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         );
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 5),
+            const Duration(minutes: 1),
           ),
         );
       } else {
@@ -191,7 +194,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         );
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 25),
+            const Duration(minutes: 1),
           ),
         );
       }
@@ -205,7 +208,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         state = state.copyWith(
           isResting: true,
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 5),
+            const Duration(minutes: 1),
           ),
         );
         print(state.intervalType);
@@ -218,7 +221,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         state = state.copyWith(isResting: false);
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 25),
+            const Duration(minutes: 1),
           ),
         );
       }
@@ -267,7 +270,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
   }
 
   void handleOnResumed() {
-    if (_isTimerPaused == null) {
+    if (_isTimerPaused == null && _pausedTime == null) {
       return;
     } // タイマーが動いてなければ何もしない
     Duration backgroundDuration =
