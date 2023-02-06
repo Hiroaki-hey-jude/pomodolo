@@ -210,7 +210,7 @@ class LoungeScreen extends StatelessWidget {
     final screenHeight = mediaQueryData.size.height;
     double onlineContainer = 0;
     if (screenHeight < 900) {
-      onlineContainer = 350;
+      onlineContainer = 320;
     } else {
       onlineContainer = 600;
     }
@@ -594,7 +594,7 @@ class LoungeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                'まだ作業を続る場合は\nStartボタンを押してください。',
+                '作業を続る場合は\nStartボタンを押してください。',
                 textAlign: TextAlign.center,
               ),
             ),

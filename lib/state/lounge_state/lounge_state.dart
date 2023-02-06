@@ -82,6 +82,8 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
       case AppLifecycleState.detached:
         print('破棄されたときの処理');
         FireStore().toggleOnline(false);
+        stopTimer();
+        resetTimer();
         _notificationId = null;
         _pausedTime = null;
         break;
@@ -110,9 +112,24 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
 
   // 時間がゼロになったらタイマーを止める
   void handleTimeIsOver() {
+    if (state.timer != null) {
+      print('1');
+    }
+    if (state.timer!.isActive) {
+      print('2');
+    }
+    if (state.time != DateTime.utc(0, 0, 0)) {
+      print('${state.time.second} 秒');
+      print('${state.time.minute} 分');
+      print(state.time);
+    }
+    if (state.time.second == 0 && state.time.minute == 0) {
+      print('これで行けるんじゃね');
+      print(state.time);
+    }
     if (state.timer != null &&
         state.timer!.isActive &&
-        state.time == DateTime.utc(0, 0, 0)) {
+        (state.time.second == 0 && state.time.minute == 0)) {
       state.timer!.cancel();
       state = state.copyWith(
         pomodoloModel: const PomodoloModel(status: Status.stopped),
@@ -140,6 +157,8 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         );
       }
       //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
+    } else {
+      print('nanikakaga okasii');
     }
   }
 
@@ -148,6 +167,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     state = state.copyWith(
       pomodoloModel: const PomodoloModel(status: Status.stopped),
     );
+    _isTimerPaused = true;
   }
 
   // タイマーを開始する
@@ -168,7 +188,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
           pomodoloModel: const PomodoloModel(status: Status.started));
       print(state.pomodoloModel.status);
       print('startボタン押した後');
-      //pomodoloModel = pomodoloModel.copyWith(status: Status.started);
+      _isTimerPaused = false;
     }
   }
 
@@ -184,7 +204,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         );
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 1),
+            const Duration(minutes: 5),
           ),
         );
       } else {
@@ -194,7 +214,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         );
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 1),
+            const Duration(minutes: 25),
           ),
         );
       }
@@ -208,7 +228,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         state = state.copyWith(
           isResting: true,
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 1),
+            const Duration(minutes: 5),
           ),
         );
         print(state.intervalType);
@@ -221,7 +241,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
         state = state.copyWith(isResting: false);
         state = state.copyWith(
           time: DateTime.utc(0, 0, 0).add(
-            const Duration(minutes: 1),
+            const Duration(minutes: 25),
           ),
         );
       }
@@ -252,25 +272,30 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
 
   //アプリがバックグラウンドに行った時の処理
   void handleOnPaused() {
-    if (state.timer == null) {
-      return;
-    }
     print('offlineになりました');
-    if (state.timer!.isActive) {
+    print(_isTimerPaused);
+    if (_isTimerPaused != false || _isTimerPaused == null) {
+      print('jdf');
+      return;
+    } else {
       _isTimerPaused = true;
       state.timer!.cancel(); // タイマーを停止する
       state = state.copyWith(
           pomodoloModel: const PomodoloModel(status: Status.stopped));
-      //pomodoloModel = pomodoloModel.copyWith(status: Status.stopped);
       print('timer cancelled');
+      _pausedTime = DateTime.now(); // バックグラウンドに遷移した時間を記録
+      _notificationId = scheduleLocalNotification(
+        state.time.difference(DateTime.utc(0, 0, 0)),
+      ); // ローカル通知をスケジュール登録
     }
-    _pausedTime = DateTime.now(); // バックグラウンドに遷移した時間を記録
-    _notificationId = scheduleLocalNotification(
-        state.time.difference(DateTime.utc(0, 0, 0))); // ローカル通知をスケジュール登録
   }
 
   void handleOnResumed() {
-    if (_isTimerPaused == null && _pausedTime == null) {
+    print(_isTimerPaused);
+    print(_pausedTime);
+    print('kokokokjlk');
+    if (_isTimerPaused == null || _pausedTime == null) {
+      print('kokoko');
       return;
     } // タイマーが動いてなければ何もしない
     Duration backgroundDuration =
@@ -328,7 +353,7 @@ class LoungeStateNotifier extends StateNotifier<LoungeState>
     int notificationId = DateTime.now().hashCode;
     flutterLocalNotificationsPlugin.zonedSchedule(
       notificationId,
-      'Time is over',
+      '時間が来ました',
       '頑張ってるね',
       tz.TZDateTime.now(tz.local).add(duration),
       const NotificationDetails(
