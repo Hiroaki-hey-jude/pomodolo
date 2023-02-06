@@ -379,7 +379,7 @@ class LoungeScreen extends StatelessWidget {
                       'Online',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Constant.blackColor,
+                        color: Constant.whiteColor,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -594,7 +594,7 @@ class LoungeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                '作業を続る場合は\nStartボタンを押してください。',
+                'Startボタンを押してポモろう！',
                 textAlign: TextAlign.center,
               ),
             ),
